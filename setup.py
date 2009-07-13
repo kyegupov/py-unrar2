@@ -1,6 +1,6 @@
 # setup.py, config file for distutils
 
-import UnRAR2
+import __init__
 
 from distutils.core import setup
 from distutils.command.install_data import install_data
@@ -28,9 +28,9 @@ for dirpath, dirnames, filenames in os.walk(r'..\UnRAR2'):
 
 
 setup(name='pyUnRAR2',
-      version=UnRAR2.__version__,
+      version=__init__.__version__,
       description='Improved Python wrapper around the free UnRAR.dll',
-      long_description=UnRAR2.__doc__.strip(),
+      long_description=__init__.__doc__.strip(),
       author='Konstantin Yegupov',
       author_email='yk4ever@gmail.com',
       url='http://code.google.com/py-unrar2',
