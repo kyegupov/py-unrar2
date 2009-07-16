@@ -6,7 +6,7 @@
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>UnRAR2</strong></big></big> (version 0.9)</font></td
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>UnRAR2</strong></big></big> (version 0.91)</font></td
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:///C|/python25/lib/site-packages/unrar2/__init__.py">c:\python25\lib\site-packages\unrar2\__init__.py</a></font></td></tr></table>
     <p><tt>pyUnRAR2&nbsp;is&nbsp;a&nbsp;ctypes&nbsp;based&nbsp;wrapper&nbsp;around&nbsp;the&nbsp;free&nbsp;UnRAR.dll.&nbsp;<br>
@@ -26,10 +26,11 @@ higher&nbsp;level&nbsp;interface&nbsp;which&nbsp;makes&nbsp;some&nbsp;common&nbs
 <font color="#ffffff" face="helvetica, arial"><big><strong>Package Contents</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="UnRAR2.setup.html">setup</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="UnRAR2.common.html">common</a><br>
 </td><td width="25%" valign=top><a href="UnRAR2.test_UnRAR2.html">test_UnRAR2</a><br>
-</td><td width="25%" valign=top><a href="UnRAR2.test_hat.html">test_hat</a><br>
-</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top><a href="UnRAR2.unix.html">unix</a><br>
+</td><td width="25%" valign=top><a href="UnRAR2.windows.html">windows</a><br>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -37,22 +38,16 @@ higher&nbsp;level&nbsp;interface&nbsp;which&nbsp;makes&nbsp;some&nbsp;common&nbs
     
 <tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl>
-<dt><font face="helvetica, arial"><a href="UnRAR2.html#PassiveReader">PassiveReader</a>
-</font></dt><dt><font face="helvetica, arial"><a href="UnRAR2.html#RarFile">RarFile</a>
-</font></dt><dt><font face="helvetica, arial"><a href="UnRAR2.html#RarInfo">RarInfo</a>
-</font></dt><dt><font face="helvetica, arial"><a href="_ctypes.html#Structure">_ctypes.Structure</a>(_ctypes._CData)
+<dt><font face="helvetica, arial"><a href="UnRAR2.windows.html#RarFileImplementation">UnRAR2.windows.RarFileImplementation</a>(<a href="__builtin__.html#object">__builtin__.object</a>)
 </font></dt><dd>
 <dl>
-<dt><font face="helvetica, arial"><a href="UnRAR2.html#RARHeaderDataEx">RARHeaderDataEx</a>
-</font></dt><dt><font face="helvetica, arial"><a href="UnRAR2.html#RAROpenArchiveDataEx">RAROpenArchiveDataEx</a>
+<dt><font face="helvetica, arial"><a href="UnRAR2.html#RarFile">RarFile</a>
 </font></dt></dl>
 </dd>
-<dt><font face="helvetica, arial"><a href="exceptions.html#Exception">exceptions.Exception</a>(<a href="exceptions.html#BaseException">exceptions.BaseException</a>)
+<dt><font face="helvetica, arial"><a href="__builtin__.html#object">__builtin__.object</a>
 </font></dt><dd>
 <dl>
-<dt><font face="helvetica, arial"><a href="UnRAR2.html#ArchiveHeaderBroken">ArchiveHeaderBroken</a>
-</font></dt><dt><font face="helvetica, arial"><a href="UnRAR2.html#FileOpenError">FileOpenError</a>
-</font></dt><dt><font face="helvetica, arial"><a href="UnRAR2.html#InvalidRARArchive">InvalidRARArchive</a>
+<dt><font face="helvetica, arial"><a href="UnRAR2.html#RarInfo">RarInfo</a>
 </font></dt></dl>
 </dd>
 </dl>
@@ -60,349 +55,16 @@ higher&nbsp;level&nbsp;interface&nbsp;which&nbsp;makes&nbsp;some&nbsp;common&nbs
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="ArchiveHeaderBroken">class <strong>ArchiveHeaderBroken</strong></a>(<a href="exceptions.html#Exception">exceptions.Exception</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="RarFile">class <strong>RarFile</strong></a>(<a href="UnRAR2.windows.html#RarFileImplementation">UnRAR2.windows.RarFileImplementation</a>)</font></td></tr>
     
 <tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="UnRAR2.html#ArchiveHeaderBroken">ArchiveHeaderBroken</a></dd>
-<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
-<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<hr>
-Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><a name="ArchiveHeaderBroken-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;x.__class__.__doc__&nbsp;for&nbsp;signature</tt></dd></dl>
-
-<hr>
-Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object at 0x1E1CCBE8&gt;<dd><tt>T.<a href="#ArchiveHeaderBroken-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
-
-<hr>
-Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
-<dl><dt><a name="ArchiveHeaderBroken-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
-&nbsp;<br>
-Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="ArchiveHeaderBroken-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#ArchiveHeaderBroken-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
-
-<hr>
-Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-</dl>
-<dl><dt><strong>args</strong></dt>
-</dl>
-<dl><dt><strong>message</strong></dt>
-<dd><tt>exception&nbsp;message</tt></dd>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="FileOpenError">class <strong>FileOpenError</strong></a>(<a href="exceptions.html#Exception">exceptions.Exception</a>)</font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="UnRAR2.html#FileOpenError">FileOpenError</a></dd>
-<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
-<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<hr>
-Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><a name="FileOpenError-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;x.__class__.__doc__&nbsp;for&nbsp;signature</tt></dd></dl>
-
-<hr>
-Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object at 0x1E1CCBE8&gt;<dd><tt>T.<a href="#FileOpenError-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
-
-<hr>
-Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
-<dl><dt><a name="FileOpenError-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
-
-<dl><dt><a name="FileOpenError-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
-
-<dl><dt><a name="FileOpenError-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
-
-<dl><dt><a name="FileOpenError-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
-&nbsp;<br>
-Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
-
-<dl><dt><a name="FileOpenError-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="FileOpenError-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
-
-<dl><dt><a name="FileOpenError-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
-
-<dl><dt><a name="FileOpenError-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="FileOpenError-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#FileOpenError-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
-
-<hr>
-Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-</dl>
-<dl><dt><strong>args</strong></dt>
-</dl>
-<dl><dt><strong>message</strong></dt>
-<dd><tt>exception&nbsp;message</tt></dd>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="InvalidRARArchive">class <strong>InvalidRARArchive</strong></a>(<a href="exceptions.html#Exception">exceptions.Exception</a>)</font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="UnRAR2.html#InvalidRARArchive">InvalidRARArchive</a></dd>
-<dd><a href="exceptions.html#Exception">exceptions.Exception</a></dd>
-<dd><a href="exceptions.html#BaseException">exceptions.BaseException</a></dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<hr>
-Methods inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><a name="InvalidRARArchive-__init__"><strong>__init__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__init__">__init__</a>(...)&nbsp;initializes&nbsp;x;&nbsp;see&nbsp;x.__class__.__doc__&nbsp;for&nbsp;signature</tt></dd></dl>
-
-<hr>
-Data and other attributes inherited from <a href="exceptions.html#Exception">exceptions.Exception</a>:<br>
-<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of type object at 0x1E1CCBE8&gt;<dd><tt>T.<a href="#InvalidRARArchive-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
-
-<hr>
-Methods inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
-<dl><dt><a name="InvalidRARArchive-__delattr__"><strong>__delattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__delattr__">__delattr__</a>('name')&nbsp;&lt;==&gt;&nbsp;del&nbsp;x.name</tt></dd></dl>
-
-<dl><dt><a name="InvalidRARArchive-__getattribute__"><strong>__getattribute__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__getattribute__">__getattribute__</a>('name')&nbsp;&lt;==&gt;&nbsp;x.name</tt></dd></dl>
-
-<dl><dt><a name="InvalidRARArchive-__getitem__"><strong>__getitem__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__getitem__">__getitem__</a>(y)&nbsp;&lt;==&gt;&nbsp;x[y]</tt></dd></dl>
-
-<dl><dt><a name="InvalidRARArchive-__getslice__"><strong>__getslice__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__getslice__">__getslice__</a>(i,&nbsp;j)&nbsp;&lt;==&gt;&nbsp;x[i:j]<br>
-&nbsp;<br>
-Use&nbsp;of&nbsp;negative&nbsp;indices&nbsp;is&nbsp;not&nbsp;supported.</tt></dd></dl>
-
-<dl><dt><a name="InvalidRARArchive-__reduce__"><strong>__reduce__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="InvalidRARArchive-__repr__"><strong>__repr__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__repr__">__repr__</a>()&nbsp;&lt;==&gt;&nbsp;repr(x)</tt></dd></dl>
-
-<dl><dt><a name="InvalidRARArchive-__setattr__"><strong>__setattr__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__setattr__">__setattr__</a>('name',&nbsp;value)&nbsp;&lt;==&gt;&nbsp;x.name&nbsp;=&nbsp;value</tt></dd></dl>
-
-<dl><dt><a name="InvalidRARArchive-__setstate__"><strong>__setstate__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="InvalidRARArchive-__str__"><strong>__str__</strong></a>(...)</dt><dd><tt>x.<a href="#InvalidRARArchive-__str__">__str__</a>()&nbsp;&lt;==&gt;&nbsp;str(x)</tt></dd></dl>
-
-<hr>
-Data descriptors inherited from <a href="exceptions.html#BaseException">exceptions.BaseException</a>:<br>
-<dl><dt><strong>__dict__</strong></dt>
-</dl>
-<dl><dt><strong>args</strong></dt>
-</dl>
-<dl><dt><strong>message</strong></dt>
-<dd><tt>exception&nbsp;message</tt></dd>
-</dl>
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="PassiveReader">class <strong>PassiveReader</strong></a></font></td></tr>
-    
-<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt>Used&nbsp;for&nbsp;reading&nbsp;files&nbsp;to&nbsp;memory<br>&nbsp;</tt></td></tr>
-<tr><td>&nbsp;</td>
-<td width="100%">Methods defined here:<br>
-<dl><dt><a name="PassiveReader-__init__"><strong>__init__</strong></a>(self, usercallback<font color="#909090">=None</font>)</dt></dl>
-
-<dl><dt><a name="PassiveReader-get_result"><strong>get_result</strong></a>(self)</dt></dl>
-
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="RARHeaderDataEx">class <strong>RARHeaderDataEx</strong></a>(<a href="_ctypes.html#Structure">_ctypes.Structure</a>)</font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="UnRAR2.html#RARHeaderDataEx">RARHeaderDataEx</a></dd>
-<dd><a href="_ctypes.html#Structure">_ctypes.Structure</a></dd>
-<dd>_ctypes._CData</dd>
+<dd><a href="UnRAR2.html#RarFile">RarFile</a></dd>
+<dd><a href="UnRAR2.windows.html#RarFileImplementation">UnRAR2.windows.RarFileImplementation</a></dd>
 <dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="RARHeaderDataEx-__init__"><strong>__init__</strong></a>(self)</dt></dl>
-
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>ArcName</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>ArcNameW</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>CmtBufSize</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>CmtSize</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>CmtState</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>FileAttr</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>FileCRC</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>FileName</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>FileNameW</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>FileTime</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>Flags</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>HostOS</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>Method</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>PackSize</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>PackSizeHigh</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>Reserved</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>UnpSize</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>UnpSizeHigh</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>UnpVer</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<hr>
-Data and other attributes inherited from <a href="_ctypes.html#Structure">_ctypes.Structure</a>:<br>
-<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of _ctypes.StructType object at 0x1D1B1958&gt;<dd><tt>T.<a href="#RARHeaderDataEx-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
-
-<hr>
-Methods inherited from _ctypes._CData:<br>
-<dl><dt><a name="RARHeaderDataEx-__ctypes_from_outparam__"><strong>__ctypes_from_outparam__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="RARHeaderDataEx-__hash__"><strong>__hash__</strong></a>(...)</dt><dd><tt>x.<a href="#RARHeaderDataEx-__hash__">__hash__</a>()&nbsp;&lt;==&gt;&nbsp;hash(x)</tt></dd></dl>
-
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="RAROpenArchiveDataEx">class <strong>RAROpenArchiveDataEx</strong></a>(<a href="_ctypes.html#Structure">_ctypes.Structure</a>)</font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="UnRAR2.html#RAROpenArchiveDataEx">RAROpenArchiveDataEx</a></dd>
-<dd><a href="_ctypes.html#Structure">_ctypes.Structure</a></dd>
-<dd>_ctypes._CData</dd>
-<dd><a href="__builtin__.html#object">__builtin__.object</a></dd>
-</dl>
-<hr>
-Methods defined here:<br>
-<dl><dt><a name="RAROpenArchiveDataEx-__init__"><strong>__init__</strong></a>(self, ArcName<font color="#909090">=None</font>, ArcNameW<font color="#909090">=u''</font>, OpenMode<font color="#909090">=0</font>)</dt></dl>
-
-<hr>
-Data descriptors defined here:<br>
-<dl><dt><strong>ArcName</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>ArcNameW</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>CmtBufSize</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>CmtSize</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>CmtState</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>Flags</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>OpenMode</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>OpenResult</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>Reserved</strong></dt>
-<dd><tt>Structure/Union&nbsp;member</tt></dd>
-</dl>
-<dl><dt><strong>__dict__</strong></dt>
-<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<dl><dt><strong>__weakref__</strong></dt>
-<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
-</dl>
-<hr>
-Data and other attributes inherited from <a href="_ctypes.html#Structure">_ctypes.Structure</a>:<br>
-<dl><dt><strong>__new__</strong> = &lt;built-in method __new__ of _ctypes.StructType object at 0x1D1B1958&gt;<dd><tt>T.<a href="#RAROpenArchiveDataEx-__new__">__new__</a>(S,&nbsp;...)&nbsp;-&gt;&nbsp;a&nbsp;new&nbsp;object&nbsp;with&nbsp;type&nbsp;S,&nbsp;a&nbsp;subtype&nbsp;of&nbsp;T</tt></dl>
-
-<hr>
-Methods inherited from _ctypes._CData:<br>
-<dl><dt><a name="RAROpenArchiveDataEx-__ctypes_from_outparam__"><strong>__ctypes_from_outparam__</strong></a>(...)</dt></dl>
-
-<dl><dt><a name="RAROpenArchiveDataEx-__hash__"><strong>__hash__</strong></a>(...)</dt><dd><tt>x.<a href="#RAROpenArchiveDataEx-__hash__">__hash__</a>()&nbsp;&lt;==&gt;&nbsp;hash(x)</tt></dd></dl>
-
-</td></tr></table> <p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#ffc8d8">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="RarFile">class <strong>RarFile</strong></a></font></td></tr>
-    
-<tr><td bgcolor="#ffc8d8"><tt>&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%">Methods defined here:<br>
 <dl><dt><a name="RarFile-__del__"><strong>__del__</strong></a>(self)</dt></dl>
 
 <dl><dt><a name="RarFile-__init__"><strong>__init__</strong></a>(self, archiveName, password<font color="#909090">=None</font>)</dt><dd><tt>Instantiate&nbsp;the&nbsp;archive.<br>
@@ -416,11 +78,18 @@ Properties:<br>
 &gt;&gt;&gt;&nbsp;print&nbsp;<a href="#RarFile">RarFile</a>('test.rar').comment<br>
 This&nbsp;is&nbsp;a&nbsp;test.</tt></dd></dl>
 
-<dl><dt><a name="RarFile-extract"><strong>extract</strong></a>(self, condition<font color="#909090">='*'</font>)</dt><dd><tt>Extract&nbsp;specific&nbsp;files&nbsp;from&nbsp;archive&nbsp;to&nbsp;disk.<br>
+<dl><dt><a name="RarFile-extract"><strong>extract</strong></a>(self, condition<font color="#909090">='*'</font>, path<font color="#909090">='.'</font>, withSubpath<font color="#909090">=True</font>)</dt><dd><tt>Extract&nbsp;specific&nbsp;files&nbsp;from&nbsp;archive&nbsp;to&nbsp;disk.<br>
+&nbsp;<br>
 If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;numbers,&nbsp;then&nbsp;extract&nbsp;files&nbsp;which&nbsp;have&nbsp;those&nbsp;positions&nbsp;in&nbsp;infolist.<br>
 If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;string,&nbsp;then&nbsp;it&nbsp;is&nbsp;treated&nbsp;as&nbsp;a&nbsp;wildcard&nbsp;for&nbsp;names&nbsp;of&nbsp;files&nbsp;to&nbsp;extract.<br>
-If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;function,&nbsp;it&nbsp;is&nbsp;treated&nbsp;as&nbsp;a&nbsp;callback&nbsp;function,&nbsp;which&nbsp;accepts&nbsp;a&nbsp;<a href="#RarInfo">RarInfo</a>&nbsp;object&nbsp;and&nbsp;returns&nbsp;either&nbsp;boolean&nbsp;True&nbsp;(extract),&nbsp;boolean&nbsp;False&nbsp;(skip)&nbsp;or&nbsp;string&nbsp;-&nbsp;a&nbsp;new&nbsp;name&nbsp;to&nbsp;save&nbsp;the&nbsp;file&nbsp;under.<br>
+If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;function,&nbsp;it&nbsp;is&nbsp;treated&nbsp;as&nbsp;a&nbsp;callback&nbsp;function,&nbsp;which&nbsp;accepts&nbsp;a&nbsp;<a href="#RarInfo">RarInfo</a>&nbsp;<a href="__builtin__.html#object">object</a><br>
+&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;returns&nbsp;either&nbsp;boolean&nbsp;True&nbsp;(extract)&nbsp;or&nbsp;boolean&nbsp;False&nbsp;(skip).<br>
+DEPRECATED:&nbsp;If&nbsp;"condition"&nbsp;callback&nbsp;returns&nbsp;string&nbsp;(only&nbsp;supported&nbsp;for&nbsp;Windows)&nbsp;-&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;that&nbsp;string&nbsp;will&nbsp;be&nbsp;used&nbsp;as&nbsp;a&nbsp;new&nbsp;name&nbsp;to&nbsp;save&nbsp;the&nbsp;file&nbsp;under.<br>
 If&nbsp;"condition"&nbsp;is&nbsp;omitted,&nbsp;all&nbsp;files&nbsp;are&nbsp;extracted.<br>
+&nbsp;<br>
+"path"&nbsp;is&nbsp;a&nbsp;directory&nbsp;to&nbsp;extract&nbsp;to<br>
+"withSubpath"&nbsp;flag&nbsp;denotes&nbsp;whether&nbsp;files&nbsp;are&nbsp;extracted&nbsp;with&nbsp;their&nbsp;full&nbsp;path&nbsp;in&nbsp;the&nbsp;archive.<br>
 &nbsp;<br>
 Returns&nbsp;list&nbsp;of&nbsp;RarInfos&nbsp;for&nbsp;extracted&nbsp;files.</tt></dd></dl>
 
@@ -432,27 +101,42 @@ Returns&nbsp;list&nbsp;of&nbsp;RarInfos&nbsp;for&nbsp;extracted&nbsp;files.</tt>
 ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;fileInArchive.isdir,<br>
 ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;fileInArchive.size,<br>
 ...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;fileInArchive.comment,<br>
-...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;fileInArchive.datetime,<br>
-...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;time.strftime('%a,&nbsp;%d&nbsp;%b&nbsp;%Y&nbsp;%H:%M:%S',&nbsp;fileInArchive.datetime)<br>
-test&nbsp;True&nbsp;0&nbsp;None&nbsp;(2003,&nbsp;6,&nbsp;30,&nbsp;1,&nbsp;59,&nbsp;48,&nbsp;0,&nbsp;181,&nbsp;1)&nbsp;Mon,&nbsp;30&nbsp;Jun&nbsp;2003&nbsp;01:59:48<br>
-test.txt&nbsp;False&nbsp;20&nbsp;None&nbsp;(2003,&nbsp;6,&nbsp;30,&nbsp;2,&nbsp;1,&nbsp;2,&nbsp;0,&nbsp;181,&nbsp;1)&nbsp;Mon,&nbsp;30&nbsp;Jun&nbsp;2003&nbsp;02:01:02<br>
-this.py&nbsp;False&nbsp;1030&nbsp;None&nbsp;(2002,&nbsp;2,&nbsp;8,&nbsp;16,&nbsp;47,&nbsp;48,&nbsp;4,&nbsp;39,&nbsp;0)&nbsp;Fri,&nbsp;08&nbsp;Feb&nbsp;2002&nbsp;16:47:48</tt></dd></dl>
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;tuple(fileInArchive.datetime)[0:5],<br>
+...&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print&nbsp;time.strftime('%a,&nbsp;%d&nbsp;%b&nbsp;%Y&nbsp;%H:%M',&nbsp;fileInArchive.datetime)<br>
+test&nbsp;True&nbsp;0&nbsp;None&nbsp;(2003,&nbsp;6,&nbsp;30,&nbsp;1,&nbsp;59)&nbsp;Mon,&nbsp;30&nbsp;Jun&nbsp;2003&nbsp;01:59<br>
+test.txt&nbsp;False&nbsp;20&nbsp;None&nbsp;(2003,&nbsp;6,&nbsp;30,&nbsp;2,&nbsp;1)&nbsp;Mon,&nbsp;30&nbsp;Jun&nbsp;2003&nbsp;02:01<br>
+this.py&nbsp;False&nbsp;1030&nbsp;None&nbsp;(2002,&nbsp;2,&nbsp;8,&nbsp;16,&nbsp;47)&nbsp;Fri,&nbsp;08&nbsp;Feb&nbsp;2002&nbsp;16:47</tt></dd></dl>
 
 <dl><dt><a name="RarFile-infolist"><strong>infolist</strong></a>(self)</dt><dd><tt>Return&nbsp;a&nbsp;list&nbsp;of&nbsp;RarInfos,&nbsp;descripting&nbsp;the&nbsp;contents&nbsp;of&nbsp;the&nbsp;archive.</tt></dd></dl>
 
 <dl><dt><a name="RarFile-read_files"><strong>read_files</strong></a>(self, condition<font color="#909090">='*'</font>)</dt><dd><tt>Read&nbsp;specific&nbsp;files&nbsp;from&nbsp;archive&nbsp;into&nbsp;memory.<br>
 If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;numbers,&nbsp;then&nbsp;return&nbsp;files&nbsp;which&nbsp;have&nbsp;those&nbsp;positions&nbsp;in&nbsp;infolist.<br>
 If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;string,&nbsp;then&nbsp;it&nbsp;is&nbsp;treated&nbsp;as&nbsp;a&nbsp;wildcard&nbsp;for&nbsp;names&nbsp;of&nbsp;files&nbsp;to&nbsp;extract.<br>
-If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;function,&nbsp;it&nbsp;is&nbsp;treated&nbsp;as&nbsp;a&nbsp;callback&nbsp;function,&nbsp;which&nbsp;accepts&nbsp;a&nbsp;<a href="#RarInfo">RarInfo</a>&nbsp;object&nbsp;and&nbsp;returns&nbsp;boolean&nbsp;True&nbsp;(extract)&nbsp;or&nbsp;False&nbsp;(skip).<br>
+If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;function,&nbsp;it&nbsp;is&nbsp;treated&nbsp;as&nbsp;a&nbsp;callback&nbsp;function,&nbsp;which&nbsp;accepts&nbsp;a&nbsp;<a href="#RarInfo">RarInfo</a>&nbsp;<a href="__builtin__.html#object">object</a>&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;returns&nbsp;boolean&nbsp;True&nbsp;(extract)&nbsp;or&nbsp;False&nbsp;(skip).<br>
 If&nbsp;"condition"&nbsp;is&nbsp;omitted,&nbsp;all&nbsp;files&nbsp;are&nbsp;returned.<br>
 &nbsp;<br>
 Returns&nbsp;list&nbsp;of&nbsp;tuples&nbsp;(<a href="#RarInfo">RarInfo</a>&nbsp;info,&nbsp;str&nbsp;contents)</tt></dd></dl>
 
+<hr>
+Methods inherited from <a href="UnRAR2.windows.html#RarFileImplementation">UnRAR2.windows.RarFileImplementation</a>:<br>
+<dl><dt><a name="RarFile-destruct"><strong>destruct</strong></a>(self)</dt></dl>
+
+<dl><dt><a name="RarFile-init"><strong>init</strong></a>(self, password<font color="#909090">=None</font>)</dt></dl>
+
+<hr>
+Data descriptors inherited from <a href="UnRAR2.windows.html#RarFileImplementation">UnRAR2.windows.RarFileImplementation</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
 </td></tr></table> <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="RarInfo">class <strong>RarInfo</strong></a></font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="RarInfo">class <strong>RarInfo</strong></a>(<a href="__builtin__.html#object">__builtin__.object</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
 <td colspan=2><tt>Represents&nbsp;a&nbsp;file&nbsp;header&nbsp;in&nbsp;an&nbsp;archive.&nbsp;Don't&nbsp;instantiate&nbsp;directly.<br>
@@ -467,14 +151,22 @@ Properties:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;isdir&nbsp;-&nbsp;True&nbsp;if&nbsp;the&nbsp;file&nbsp;is&nbsp;a&nbsp;directory<br>
 &nbsp;&nbsp;&nbsp;&nbsp;size&nbsp;-&nbsp;size&nbsp;in&nbsp;bytes&nbsp;of&nbsp;the&nbsp;uncompressed&nbsp;file<br>
 &nbsp;&nbsp;&nbsp;&nbsp;comment&nbsp;-&nbsp;comment&nbsp;associated&nbsp;with&nbsp;the&nbsp;file<br>
-&nbsp;<br>
-Note&nbsp;-&nbsp;this&nbsp;is&nbsp;not&nbsp;currently&nbsp;intended&nbsp;to&nbsp;be&nbsp;a&nbsp;Python&nbsp;file-like&nbsp;object.<br>&nbsp;</tt></td></tr>
+&nbsp;&nbsp;&nbsp;&nbsp;<br>
+Note&nbsp;-&nbsp;this&nbsp;is&nbsp;not&nbsp;currently&nbsp;intended&nbsp;to&nbsp;be&nbsp;a&nbsp;Python&nbsp;file-like&nbsp;<a href="__builtin__.html#object">object</a>.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="RarInfo-__init__"><strong>__init__</strong></a>(self, rarfile, headerData, index)</dt></dl>
+<dl><dt><a name="RarInfo-__init__"><strong>__init__</strong></a>(self, rarfile, data)</dt></dl>
 
 <dl><dt><a name="RarInfo-__str__"><strong>__str__</strong></a>(self)</dt></dl>
 
+<hr>
+Data descriptors defined here:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -482,9 +174,7 @@ Note&nbsp;-&nbsp;this&nbsp;is&nbsp;not&nbsp;currently&nbsp;intended&nbsp;to&nbsp
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-DosDateTimeToTimeTuple"><strong>DosDateTimeToTimeTuple</strong></a>(dosDateTime)</dt><dd><tt>Convert&nbsp;an&nbsp;MS-DOS&nbsp;format&nbsp;date&nbsp;time&nbsp;to&nbsp;a&nbsp;Python&nbsp;time&nbsp;tuple.</tt></dd></dl>
- <dl><dt><a name="-RARSetPassword"><strong>RARSetPassword</strong></a>(*args, **kwargs)</dt></dl>
- <dl><dt><a name="-condition2checker"><strong>condition2checker</strong></a>(condition)</dt><dd><tt>Converts&nbsp;different&nbsp;condition&nbsp;types&nbsp;to&nbsp;callback</tt></dd></dl>
+<td width="100%"><dl><dt><a name="-condition2checker"><strong>condition2checker</strong></a>(condition)</dt><dd><tt>Converts&nbsp;different&nbsp;condition&nbsp;types&nbsp;to&nbsp;callback</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#55aa55">
@@ -492,37 +182,6 @@ Note&nbsp;-&nbsp;this&nbsp;is&nbsp;not&nbsp;currently&nbsp;intended&nbsp;to&nbsp
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>ERAR_BAD_ARCHIVE</strong> = 13<br>
-<strong>ERAR_BAD_DATA</strong> = 12<br>
-<strong>ERAR_ECLOSE</strong> = 17<br>
-<strong>ERAR_ECREATE</strong> = 16<br>
-<strong>ERAR_END_ARCHIVE</strong> = 10<br>
-<strong>ERAR_EOPEN</strong> = 15<br>
-<strong>ERAR_EREAD</strong> = 18<br>
-<strong>ERAR_EWRITE</strong> = 19<br>
-<strong>ERAR_NO_MEMORY</strong> = 11<br>
-<strong>ERAR_SMALL_BUF</strong> = 20<br>
-<strong>ERAR_UNKNOWN</strong> = 21<br>
-<strong>ERAR_UNKNOWN_FORMAT</strong> = 14<br>
-<strong>RARCloseArchive</strong> = &lt;_FuncPtr object at 0x00B26030&gt;<br>
-<strong>RARExceptions</strong> = {11: &lt;type 'exceptions.MemoryError'&gt;, 12: &lt;class 'UnRAR2.ArchiveHeaderBroken'&gt;, 13: &lt;class 'UnRAR2.InvalidRARArchive'&gt;, 15: &lt;class 'UnRAR2.FileOpenError'&gt;}<br>
-<strong>RARGetDllVersion</strong> = &lt;_FuncPtr object at 0x00A2ED50&gt;<br>
-<strong>RAROpenArchiveEx</strong> = &lt;_FuncPtr object at 0x00A2EDC8&gt;<br>
-<strong>RARProcessFile</strong> = &lt;_FuncPtr object at 0x00A2EF30&gt;<br>
-<strong>RARReadHeaderEx</strong> = &lt;_FuncPtr object at 0x00A2EE40&gt;<br>
-<strong>RARSetCallback</strong> = &lt;_FuncPtr object at 0x00B260A8&gt;<br>
-<strong>RAR_DLL_VERSION</strong> = 3<br>
-<strong>RAR_EXTRACT</strong> = 2<br>
-<strong>RAR_OM_EXTRACT</strong> = 1<br>
-<strong>RAR_OM_LIST</strong> = 0<br>
-<strong>RAR_SKIP</strong> = 0<br>
-<strong>RAR_TEST</strong> = 1<br>
-<strong>RAR_VOL_ASK</strong> = 0<br>
-<strong>RAR_VOL_NOTIFY</strong> = 1<br>
-<strong>UCM_CHANGEVOLUME</strong> = 0<br>
-<strong>UCM_NEEDPASSWORD</strong> = 2<br>
-<strong>UCM_PROCESSDATA</strong> = 1<br>
-<strong>__version__</strong> = '0.9'<br>
-<strong>generators</strong> = _Feature((2, 2, 0, 'alpha', 1), (2, 3, 0, 'final', 0), 0)<br>
-<strong>unrar</strong> = &lt;WinDLL 'C:\python25\lib\site-packages\UnRAR2\UnRARDLL\unrar.dll', handle 970000 at aa5e50&gt;</td></tr></table>
+<td width="100%"><strong>__version__</strong> = '0.91'<br>
+<strong>in_windows</strong> = True</td></tr></table>
 </body></html>

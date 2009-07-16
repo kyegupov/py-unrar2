@@ -25,8 +25,7 @@
 from __future__ import generators
 
 import ctypes.wintypes
-import fnmatch
-import os
+import os, os.path
 import Queue
 import time
 
@@ -178,21 +177,10 @@ class PassiveReader:
     def get_result(self):
         return ''.join(self.buf)
 
-class RarFile:
+class RarFileImplementation(object):
 
-    def __init__(self, archiveName, password=None):
-        """Instantiate the archive.
+    def init(self, password=None):
 
-        archiveName is the name of the RAR file.
-        password is used to decrypt the files in the archive.
-
-        Properties:
-            comment - comment associated with the archive
-
-        >>> print RarFile('test.rar').comment
-        This is a test.
-        """
-        self.archiveName = archiveName
         archiveData = RAROpenArchiveDataEx(ArcNameW=self.archiveName, OpenMode=RAR_OM_EXTRACT)
         self._handle = RAROpenArchiveEx(ctypes.byref(archiveData))
 
@@ -207,50 +195,34 @@ class RarFile:
         if password:
             RARSetPassword(self._handle, password)
 
-    def __del__(self):
+    def destruct(self):
         if self._handle and RARCloseArchive:
             RARCloseArchive(self._handle)
 
     def infoiter(self):
-        """Iterate over all the files in the archive, generating RarInfos.
-
-        >>> import os
-        >>> for fileInArchive in RarFile('test.rar').infoiter():
-        ...     print os.path.split(fileInArchive.filename)[-1],
-        ...     print fileInArchive.isdir,
-        ...     print fileInArchive.size,
-        ...     print fileInArchive.comment,
-        ...     print fileInArchive.datetime,
-        ...     print time.strftime('%a, %d %b %Y %H:%M:%S', fileInArchive.datetime)
-        test True 0 None (2003, 6, 30, 1, 59, 48, 0, 181, 1) Mon, 30 Jun 2003 01:59:48
-        test.txt False 20 None (2003, 6, 30, 2, 1, 2, 0, 181, 1) Mon, 30 Jun 2003 02:01:02
-        this.py False 1030 None (2002, 2, 8, 16, 47, 48, 4, 39, 0) Fri, 08 Feb 2002 16:47:48
-        """
         index = 0
         headerData = RARHeaderDataEx()
         while not RARReadHeaderEx(self._handle, ctypes.byref(headerData)):
-            rarFile = RarInfo(self, index, headerData=headerData)
             self.needskip = True
-            yield rarFile
+            
+            data = {}
+            data['index'] = index
+            data['filename'] = headerData.FileName
+            data['datetime'] = DosDateTimeToTimeTuple(headerData.FileTime)
+            data['isdir'] = ((headerData.Flags & 0xE0) == 0xE0)
+            data['size'] = headerData.UnpSize + (headerData.UnpSizeHigh << 32)
+            if headerData.CmtState == 1:
+                data['comment'] = headerData.CmtBuf.value
+            else:
+                data['comment'] = None
+
+            yield data
             index += 1
             if self.needskip:
                 RARProcessFile(self._handle, RAR_SKIP, None, None)
 
-    def infolist(self):
-        """Return a list of RarInfos, descripting the contents of the archive."""
-        return list(self.infoiter)
-
-    def read_files(self, condition='*'):
-        """Read specific files from archive into memory.
-        If "condition" is a list of numbers, then return files which have those positions in infolist.
-        If "condition" is a string, then it is treated as a wildcard for names of files to extract.
-        If "condition" is a function, it is treated as a callback function, which accepts a RarInfo object and returns boolean True (extract) or False (skip).
-        If "condition" is omitted, all files are returned.
-        
-        Returns list of tuples (RarInfo info, str contents)
-        """
+    def read_files(self, checker):
         res = []
-        checker = condition2checker(condition)
         for info in self.infoiter():
             if checker(info) and not info.isdir:
                 reader = PassiveReader()
@@ -262,22 +234,20 @@ class RarFile:
         return res
         
 
-    def extract(self,  condition='*'):
-        """Extract specific files from archive to disk.
-        If "condition" is a list of numbers, then extract files which have those positions in infolist.
-        If "condition" is a string, then it is treated as a wildcard for names of files to extract.
-        If "condition" is a function, it is treated as a callback function, which accepts a RarInfo object and returns either boolean True (extract), boolean False (skip) or string - a new name to save the file under.
-        If "condition" is omitted, all files are extracted.
-        
-        Returns list of RarInfos for extracted files."""
+    def extract(self,  checker, path, withSubpath):
         res = []
-        checker = condition2checker(condition)
         for info in self.infoiter():
             checkres = checker(info)
             if checkres!=False and not info.isdir:
                 if checkres==True:
-                    checkres = info.filename
-                RARProcessFile(self._handle, RAR_EXTRACT, None, checkres)                
+                    fn = info.filename
+                    if not withSubpath:
+                        fn = os.path.split(fn)[-1]
+                    target = os.path.join(path, fn)
+                else:
+                    raise DeprecationWarning, "Condition callbacks returning strings are deprecated and only supported in Windows"                    
+                    target = checkres
+                RARProcessFile(self._handle, RAR_EXTRACT, None, target)                
                 self.needskip = False
                 res.append(info)
         return res

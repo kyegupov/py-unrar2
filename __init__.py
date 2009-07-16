@@ -33,7 +33,7 @@ similar to the C interface provided by UnRAR. There is also a
 higher level interface which makes some common operations easier.
 """
 
-__version__ = '0.91'
+__version__ = '0.95'
 
 try:
     WindowsError
@@ -42,12 +42,14 @@ except NameError:
     in_windows = False
 
 if in_windows:
-    from windows import RarFile
+    from windows import RarFileImplementation
 else:
-    raise NotImplementedError('Only Windows is supported so far')
+    from unix import RarFileImplementation
     
+    
+import fnmatch, time
 
-class RarInfo:
+class RarInfo(object):
     """Represents a file header in an archive. Don't instantiate directly.
     Use only to obtain information about file.
     YOU CANNOT EXTRACT FILE CONTENTS USING THIS OBJECT.
@@ -60,38 +62,97 @@ class RarInfo:
         isdir - True if the file is a directory
         size - size in bytes of the uncompressed file
         comment - comment associated with the file
-
-                  1030      521  50% 08-02-02 16:47  .....A.   119BE7CF m5b 2.9
-
+        
     Note - this is not currently intended to be a Python file-like object.
     """
 
-    def __init__(self, rarfile, index, headerData=None, unrar_v_lines=None):
+    def __init__(self, rarfile, data):
         self.rarfile = rarfile
-        self.index = index
-        if headerData!=None:
-            self.filename = headerData.FileName
-            self.datetime = DosDateTimeToTimeTuple(headerData.FileTime)
-            self.isdir = ((headerData.Flags & 0xE0) == 0xE0)
-            self.size = headerData.UnpSize + (headerData.UnpSizeHigh << 32)
-            if headerData.CmtState == 1:
-                self.comment = headerData.CmtBuf.value
-            else:
-                self.comment = None
-        elif unrar_v_lines!=None and len(unrar_v_lines)==2:
-            self.filename = unrar_v_lines[0].strip()
-            info = unrar_v_lines[1]
-            self.size = int(info[:22])
-            attr = info[53:60]
-            self.isdir = 'D' in attr
-            self.datetime = time.strptime(info[37:51], '%d-%m-%y %H:%M')
-            self.comment = None
+        self.index = data['index']
+        self.filename = data['filename']
+        self.isdir = data['isdir']
+        self.size = data['size']
+        self.datetime = data['datetime']
+        self.comment = data['comment']
+            
 
 
     def __str__(self):
         return '<RarInfo "%s" in "%s">' % (self.filename, self.rarfile.archiveName)
 
+class RarFile(RarFileImplementation):
 
+    def __init__(self, archiveName, password=None):
+        """Instantiate the archive.
+
+        archiveName is the name of the RAR file.
+        password is used to decrypt the files in the archive.
+
+        Properties:
+            comment - comment associated with the archive
+
+        >>> print RarFile('test.rar').comment
+        This is a test.
+        """
+        self.archiveName = archiveName
+        RarFileImplementation.init(self, password)
+
+    def __del__(self):
+        self.destruct()
+
+    def infoiter(self):
+        """Iterate over all the files in the archive, generating RarInfos.
+
+        >>> import os
+        >>> for fileInArchive in RarFile('test.rar').infoiter():
+        ...     print os.path.split(fileInArchive.filename)[-1],
+        ...     print fileInArchive.isdir,
+        ...     print fileInArchive.size,
+        ...     print fileInArchive.comment,
+        ...     print tuple(fileInArchive.datetime)[0:5],
+        ...     print time.strftime('%a, %d %b %Y %H:%M', fileInArchive.datetime)
+        test True 0 None (2003, 6, 30, 1, 59) Mon, 30 Jun 2003 01:59
+        test.txt False 20 None (2003, 6, 30, 2, 1) Mon, 30 Jun 2003 02:01
+        this.py False 1030 None (2002, 2, 8, 16, 47) Fri, 08 Feb 2002 16:47
+        """
+        for params in RarFileImplementation.infoiter(self):
+            yield RarInfo(self, params)
+
+    def infolist(self):
+        """Return a list of RarInfos, descripting the contents of the archive."""
+        return list(self.infoiter())
+
+    def read_files(self, condition='*'):
+        """Read specific files from archive into memory.
+        If "condition" is a list of numbers, then return files which have those positions in infolist.
+        If "condition" is a string, then it is treated as a wildcard for names of files to extract.
+        If "condition" is a function, it is treated as a callback function, which accepts a RarInfo object 
+            and returns boolean True (extract) or False (skip).
+        If "condition" is omitted, all files are returned.
+        
+        Returns list of tuples (RarInfo info, str contents)
+        """
+        checker = condition2checker(condition)
+        return RarFileImplementation.read_files(self, checker)
+        
+
+    def extract(self,  condition='*', path='.', withSubpath=True):
+        """Extract specific files from archive to disk.
+        
+        If "condition" is a list of numbers, then extract files which have those positions in infolist.
+        If "condition" is a string, then it is treated as a wildcard for names of files to extract.
+        If "condition" is a function, it is treated as a callback function, which accepts a RarInfo object
+            and returns either boolean True (extract) or boolean False (skip).
+        DEPRECATED: If "condition" callback returns string (only supported for Windows) - 
+            that string will be used as a new name to save the file under.
+        If "condition" is omitted, all files are extracted.
+        
+        "path" is a directory to extract to
+        "withSubpath" flag denotes whether files are extracted with their full path in the archive.
+        
+        Returns list of RarInfos for extracted files."""
+        checker = condition2checker(condition)
+        return RarFileImplementation.extract(self, checker, path, withSubpath)
 
 def condition2checker(condition):
     """Converts different condition types to callback"""
@@ -107,3 +168,5 @@ def condition2checker(condition):
         return condition
     else:
         raise TypeError
+
+

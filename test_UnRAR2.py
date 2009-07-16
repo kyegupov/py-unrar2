@@ -3,26 +3,27 @@ import os
 import UnRAR2
 
 
-def cleanup():
-    if os.path.exists('test'):
-        for filename in os.listdir('test'):
-            os.remove(os.path.join('test', filename))
-        os.removedirs('test')
+def cleanup(dir='test'):
+    for path, dirs, files in os.walk(dir):
+        for fn in files:
+            os.remove(os.path.join(path, fn))
+        for dir in dirs:
+            os.removedirs(os.path.join(path, dir))
 
 
 # extract all the files in test.rar
 cleanup()
 UnRAR2.RarFile('test.rar').extract()
-assert os.path.exists(r'test\test.txt')
-assert os.path.exists(r'test\this.py')
+assert os.path.exists(r'test'+os.sep+'test.txt')
+assert os.path.exists(r'test'+os.sep+'this.py')
 cleanup()
 
 
 # extract all the files in test.rar matching the wildcard *.txt
 cleanup()
 UnRAR2.RarFile('test.rar').extract('*.txt')
-assert os.path.exists(r'test\test.txt')
-assert not os.path.exists(r'test\this.py')
+assert os.path.exists(r'test'+os.sep+'test.txt')
+assert not os.path.exists(r'test'+os.sep+'this.py')
 cleanup()
 
 
@@ -34,22 +35,17 @@ archive.extract(lambda rarinfo: rarinfo.size <= 1024)
 for rarinfo in archive.infoiter():
     if rarinfo.size <= 1024:
         assert rarinfo.size == os.stat(rarinfo.filename).st_size
-assert file(r'test\test.txt', 'rt').read() == 'This is only a test.'
-assert not os.path.exists(r'test\this.py')
+assert file(r'test'+os.sep+'test.txt', 'rt').read() == 'This is only a test.'
+assert not os.path.exists(r'test'+os.sep+'this.py')
 cleanup()
 
 
 # extract this.py, overriding it's destination
-cleanup()
+cleanup('test2')
 archive = UnRAR2.RarFile('test.rar')
-def this2that(rarinfo):
-    if rarinfo.filename.endswith('this.py'):
-        return r'test\that.py'
-    else:
-        return False
-archive.extract(this2that)
-assert os.path.exists(r'test\that.py')
-cleanup()
+archive.extract('*.py', 'test2', False)
+assert os.path.exists(r'test2'+os.sep+'this.py')
+cleanup('test2')
 
 
 # extract test.txt to memory
@@ -69,4 +65,7 @@ import pydoc
 pydoc.writedoc(UnRAR2)
 
 # cleanup
-os.remove('__init__.pyc')
+try:
+    os.remove('__init__.pyc')
+except:
+    pass
