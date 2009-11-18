@@ -16,16 +16,17 @@ class smart_install_data(install_data):
 
 
 data_files = []
-for dirpath, dirnames, filenames in os.walk(r'..\UnRAR2'):
-    for dirname in ['build', 'dist', '_sgbak']:
+for dirpath, dirnames, filenames in os.walk(r'.'):
+    for dirname in ['.svn','build', 'dist', '_sgbak']:
         try:
             dirnames.remove(dirname)
         except ValueError:
             pass
     for filename in [fn for fn in filenames if os.path.splitext(fn)[-1].lower() in ('.pyc', '.pyo', '.scc')]:
         filenames.remove(filename)
-    data_files.append((dirpath.lstrip('.').lstrip('\\'), [os.path.join(dirpath, fn) for fn in filenames]))
-
+    parts = ['UnRAR2']+dirpath.split(os.sep)[1:]
+    
+    data_files.append((os.path.join(*parts), [os.path.join(dirpath, fn) for fn in filenames]))
 
 setup(name='pyUnRAR2',
       version=__init__.__version__,
