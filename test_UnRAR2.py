@@ -33,7 +33,7 @@ archive = UnRAR2.RarFile('test.rar')
 assert archive.comment == 'This is a test.'
 archive.extract(lambda rarinfo: rarinfo.size <= 1024)
 for rarinfo in archive.infoiter():
-    if rarinfo.size <= 1024:
+    if rarinfo.size <= 1024 and not rarinfo.isdir:
         assert rarinfo.size == os.stat(rarinfo.filename).st_size
 assert file(r'test'+os.sep+'test.txt', 'rt').read() == 'This is only a test.'
 assert not os.path.exists(r'test'+os.sep+'this.py')
