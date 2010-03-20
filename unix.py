@@ -64,13 +64,16 @@ class RarFileImplementation(object):
         accum = []
         source = pipe.readlines().__iter__()
         line = ''
-        while not line.startswith('Comment:'):
+        while not (line.startswith('Comment:') or line.startswith('Pathname/Comment')):
             line = source.next()
         while not line.startswith('Pathname/Comment'):
             accum.append(line.rstrip('\n'))
             line = source.next()
-        accum[0] = accum[0][9:]
-        self.comment = '\n'.join(accum[:-1])
+        if len(accum):
+            accum[0] = accum[0][9:]
+            self.comment = '\n'.join(accum[:-1])
+        else:
+            self.comment = None
                 
 
     def call(self, cmd, options=[], files=[]):
