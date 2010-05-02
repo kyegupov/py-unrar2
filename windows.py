@@ -24,7 +24,7 @@
 
 from __future__ import generators
 
-import ctypes.wintypes
+import ctypes, ctypes.wintypes
 import os, os.path
 import Queue
 import time
@@ -59,10 +59,16 @@ UCM_CHANGEVOLUME = 0
 UCM_PROCESSDATA = 1
 UCM_NEEDPASSWORD = 2
 
+architecture_bits = ctypes.sizeof(ctypes.c_voidp)*8
+dll_name = "unrar.dll"
+if architecture_bits == 64:
+    dll_name = "x64\\unrar64.dll"
+    
+    
 try:
-    unrar = ctypes.WinDLL(os.path.join(os.path.split(__file__)[0], 'UnRARDLL', 'unrar.dll'))
+    unrar = ctypes.WinDLL(os.path.join(os.path.split(__file__)[0], 'UnRARDLL', dll_name))
 except WindowsError:
-    unrar = ctypes.WinDLL('unrar.dll')
+    unrar = ctypes.WinDLL(dll_name)
 
 
 class RAROpenArchiveDataEx(ctypes.Structure):

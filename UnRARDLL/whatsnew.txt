@@ -1,3 +1,9 @@
+List of unrar.dll API changes. We do not include performance and reliability
+improvements into this list, but this library and RAR/UnRAR tools share
+the same source code. So the latest version of unrar.dll usually contains
+same decompression algorithm changes as the latest UnRAR version.
+============================================================================
+
 --  18 January 2008
 
 all LONG parameters of CallbackProc function were changed
