@@ -33,7 +33,7 @@ similar to the C interface provided by UnRAR. There is also a
 higher level interface which makes some common operations easier.
 """
 
-__version__ = '0.96'
+__version__ = '0.97'
 
 try:
     WindowsError
