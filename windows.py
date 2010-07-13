@@ -240,7 +240,7 @@ class RarFileImplementation(object):
         return res
         
 
-    def extract(self,  checker, path, withSubpath):
+    def extract(self,  checker, path, withSubpath, overwrite):
         res = []
         for info in self.infoiter():
             checkres = checker(info)
@@ -253,7 +253,8 @@ class RarFileImplementation(object):
                 else:
                     raise DeprecationWarning, "Condition callbacks returning strings are deprecated and only supported in Windows"                    
                     target = checkres
-                RARProcessFile(self._handle, RAR_EXTRACT, None, target)                
+                if overwrite or (not os.path.exists(target)):
+					RARProcessFile(self._handle, RAR_EXTRACT, None, target)                
                 self.needskip = False
                 res.append(info)
         return res

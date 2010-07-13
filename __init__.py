@@ -33,7 +33,7 @@ similar to the C interface provided by UnRAR. There is also a
 higher level interface which makes some common operations easier.
 """
 
-__version__ = '0.97'
+__version__ = '0.98'
 
 try:
     WindowsError
@@ -47,7 +47,7 @@ else:
     from unix import RarFileImplementation
     
     
-import fnmatch, time
+import fnmatch, time, weakref
 
 class RarInfo(object):
     """Represents a file header in an archive. Don't instantiate directly.
@@ -67,7 +67,7 @@ class RarInfo(object):
     """
 
     def __init__(self, rarfile, data):
-        self.rarfile = rarfile
+        self.rarfile = weakref.ref(rarfile)
         self.index = data['index']
         self.filename = data['filename']
         self.isdir = data['isdir']
@@ -136,7 +136,7 @@ class RarFile(RarFileImplementation):
         return RarFileImplementation.read_files(self, checker)
         
 
-    def extract(self,  condition='*', path='.', withSubpath=True):
+    def extract(self,  condition='*', path='.', withSubpath=True, overwrite=True):
         """Extract specific files from archive to disk.
         
         If "condition" is a list of numbers, then extract files which have those positions in infolist.
@@ -149,10 +149,11 @@ class RarFile(RarFileImplementation):
         
         "path" is a directory to extract to
         "withSubpath" flag denotes whether files are extracted with their full path in the archive.
+        "overwrite" flag denotes whether extracted files will overwrite old ones. Defaults to true.
         
         Returns list of RarInfos for extracted files."""
         checker = condition2checker(condition)
-        return RarFileImplementation.extract(self, checker, path, withSubpath)
+        return RarFileImplementation.extract(self, checker, path, withSubpath, overwrite)
 
 def condition2checker(condition):
     """Converts different condition types to callback"""

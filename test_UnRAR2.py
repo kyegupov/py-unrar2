@@ -56,6 +56,26 @@ assert len(entries)==1
 assert entries[0][0].filename.endswith('test.txt')
 assert entries[0][1]=='This is only a test.'
 
+
+# extract all the files in test.rar with overwriting
+cleanup()
+fo = open(r'test'+os.sep+'test.txt',"wt")
+fo.write("blah")
+fo.close()
+UnRAR2.RarFile('test.rar').extract('*.txt')
+assert open(r'test'+os.sep+'test.txt',"rt").read()!="blah"
+cleanup()
+
+# extract all the files in test.rar without overwriting
+cleanup()
+fo = open(r'test'+os.sep+'test.txt',"wt")
+fo.write("blahblah")
+fo.close()
+UnRAR2.RarFile('test.rar').extract('*.txt', overwrite = False)
+assert open(r'test'+os.sep+'test.txt',"rt").read()=="blahblah"
+cleanup()
+
+
 # make sure docstring examples are working
 import doctest
 doctest.testmod(UnRAR2)

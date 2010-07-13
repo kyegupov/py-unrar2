@@ -6,9 +6,9 @@
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>UnRAR2</strong></big></big> (version 0.96)</font></td
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>UnRAR2</strong></big></big> (version 0.98)</font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/usr/local/lib/python2.6/dist-packages/pyUnRAR2-0.96-py2.6.egg/UnRAR2/__init__.py">/usr/local/lib/python2.6/dist-packages/pyUnRAR2-0.96-py2.6.egg/UnRAR2/__init__.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/usr/local/lib/python2.6/dist-packages/UnRAR2/__init__.py">/usr/local/lib/python2.6/dist-packages/UnRAR2/__init__.py</a></font></td></tr></table>
     <p><tt>pyUnRAR2&nbsp;is&nbsp;a&nbsp;ctypes&nbsp;based&nbsp;wrapper&nbsp;around&nbsp;the&nbsp;free&nbsp;UnRAR.dll.&nbsp;<br>
 &nbsp;<br>
 It&nbsp;is&nbsp;an&nbsp;modified&nbsp;version&nbsp;of&nbsp;Jimmy&nbsp;Retzlaff's&nbsp;pyUnRAR&nbsp;-&nbsp;more&nbsp;simple,<br>
@@ -78,7 +78,7 @@ Properties:<br>
 &gt;&gt;&gt;&nbsp;print&nbsp;<a href="#RarFile">RarFile</a>('test.rar').comment<br>
 This&nbsp;is&nbsp;a&nbsp;test.</tt></dd></dl>
 
-<dl><dt><a name="RarFile-extract"><strong>extract</strong></a>(self, condition<font color="#909090">='*'</font>, path<font color="#909090">='.'</font>, withSubpath<font color="#909090">=True</font>)</dt><dd><tt>Extract&nbsp;specific&nbsp;files&nbsp;from&nbsp;archive&nbsp;to&nbsp;disk.<br>
+<dl><dt><a name="RarFile-extract"><strong>extract</strong></a>(self, condition<font color="#909090">='*'</font>, path<font color="#909090">='.'</font>, withSubpath<font color="#909090">=True</font>, overwrite<font color="#909090">=True</font>)</dt><dd><tt>Extract&nbsp;specific&nbsp;files&nbsp;from&nbsp;archive&nbsp;to&nbsp;disk.<br>
 &nbsp;<br>
 If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;list&nbsp;of&nbsp;numbers,&nbsp;then&nbsp;extract&nbsp;files&nbsp;which&nbsp;have&nbsp;those&nbsp;positions&nbsp;in&nbsp;infolist.<br>
 If&nbsp;"condition"&nbsp;is&nbsp;a&nbsp;string,&nbsp;then&nbsp;it&nbsp;is&nbsp;treated&nbsp;as&nbsp;a&nbsp;wildcard&nbsp;for&nbsp;names&nbsp;of&nbsp;files&nbsp;to&nbsp;extract.<br>
@@ -90,6 +90,7 @@ If&nbsp;"condition"&nbsp;is&nbsp;omitted,&nbsp;all&nbsp;files&nbsp;are&nbsp;extr
 &nbsp;<br>
 "path"&nbsp;is&nbsp;a&nbsp;directory&nbsp;to&nbsp;extract&nbsp;to<br>
 "withSubpath"&nbsp;flag&nbsp;denotes&nbsp;whether&nbsp;files&nbsp;are&nbsp;extracted&nbsp;with&nbsp;their&nbsp;full&nbsp;path&nbsp;in&nbsp;the&nbsp;archive.<br>
+"overwrite"&nbsp;flag&nbsp;denotes&nbsp;whether&nbsp;extracted&nbsp;files&nbsp;will&nbsp;overwrite&nbsp;old&nbsp;ones.&nbsp;Defaults&nbsp;to&nbsp;true.<br>
 &nbsp;<br>
 Returns&nbsp;list&nbsp;of&nbsp;RarInfos&nbsp;for&nbsp;extracted&nbsp;files.</tt></dd></dl>
 
@@ -184,6 +185,6 @@ Data descriptors defined here:<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>__version__</strong> = '0.96'<br>
+<td width="100%"><strong>__version__</strong> = '0.98'<br>
 <strong>in_windows</strong> = False</td></tr></table>
 </body></html>

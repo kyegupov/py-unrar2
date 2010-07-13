@@ -116,11 +116,16 @@ class RarFileImplementation(object):
         return res            
 
           
-    def extract(self, checker, path, withSubpath):
+    def extract(self, checker, path, withSubpath, overwrite):
         res = []
         command = 'x'
         if not withSubpath:
             command = 'e'
+        options = []
+        if overwrite:
+            options.append('o+')
+        else:
+			options.append('o-')
         if not path.endswith(os.sep):
             path += os.sep
         names = []
@@ -132,8 +137,8 @@ class RarFileImplementation(object):
                 names.append(info.filename)
                 res.append(info)
         names.append(path)
-        proc = self.call(command, [], names)
-        proc.wait()
+        proc = self.call(command, options, names)
+        proc.communicate()
         return res            
             
     def destruct(self):
