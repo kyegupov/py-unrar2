@@ -75,6 +75,8 @@ UnRAR2.RarFile('test.rar').extract('*.txt', overwrite = False)
 assert open(r'test'+os.sep+'test.txt',"rt").read()=="blahblah"
 cleanup()
 
+# list big file in an archive
+list(UnRAR2.RarFile('test_nulls.rar').infoiter())
 
 # make sure docstring examples are working
 import doctest

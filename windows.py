@@ -29,6 +29,8 @@ import os, os.path
 import Queue
 import time
 
+from rar_exceptions import *
+
 ERAR_END_ARCHIVE = 10
 ERAR_NO_MEMORY = 11
 ERAR_BAD_DATA = 12
@@ -154,9 +156,6 @@ UNRARCALLBACK = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_uint, ctypes.c_long, c
 RARSetCallback = _wrap(ctypes.c_int, unrar.RARSetCallback, [ctypes.wintypes.HANDLE, UNRARCALLBACK, ctypes.c_long])
 
 
-class ArchiveHeaderBroken(Exception): pass
-class InvalidRARArchive(Exception): pass
-class FileOpenError(Exception): pass
 
 RARExceptions = {
                  ERAR_NO_MEMORY : MemoryError,

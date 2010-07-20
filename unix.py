@@ -26,8 +26,9 @@ import subprocess
 import gc
 
 import os, os.path
-import time
+import time, re
 
+from rar_exceptions import *
 
 class UnpackerNotInstalled(Exception): pass
 
@@ -51,7 +52,7 @@ def call_unrar(params):
     args = [rar_executable_cached] + params
     try:
         gc.disable() # See http://bugs.python.org/issue1336
-        return subprocess.Popen(args, stdout=subprocess.PIPE)
+        return subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     finally:
         gc.enable()
 
@@ -60,11 +61,18 @@ class RarFileImplementation(object):
     def init(self, password=None):
         self.password = password
 
-        pipe = self.call('v', []).stdout
+        stdoutdata, stderrdata = self.call('v', []).communicate()
+        
+        for line in stderrdata.splitlines():
+            if line.strip().startswith("Cannot open"):
+                raise FileOpenError
+            
         accum = []
-        source = pipe.readlines().__iter__()
+        source = iter(stdoutdata.splitlines())
         line = ''
         while not (line.startswith('Comment:') or line.startswith('Pathname/Comment')):
+            if line.strip().endswith('is not RAR archive'):
+                raise InvalidRARArchive
             line = source.next()
         while not line.startswith('Pathname/Comment'):
             accum.append(line.rstrip('\n'))
@@ -81,25 +89,33 @@ class RarFileImplementation(object):
         return call_unrar([cmd]+soptions+['--',self.archiveName]+files)
 
     def infoiter(self):
-        pipe = self.call('v', ['c-']).stdout
+        stdoutdata, stderrdata = self.call('v', ['c-']).communicate()
+        
+        for line in stderrdata.splitlines():
+            if line.strip().startswith("Cannot open"):
+                raise FileOpenError
+            
         accum = []
-        source = pipe.readlines().__iter__()
+        source = iter(stdoutdata.splitlines())
         line = ''
         while not line.startswith('--------------'):
+            if line.strip().endswith('is not RAR archive'):
+                raise InvalidRARArchive
             line = source.next()
         line = source.next()
         i = 0
+        re_spaces = re.compile(r"\s+")
         while not line.startswith('--------------'):
             accum.append(line)
             if len(accum)==2:
                 data = {}
                 data['index'] = i
                 data['filename'] = accum[0].strip()
-                info = accum[1]
-                data['size'] = int(info[:22].strip())
-                attr = info[53:60]
-                data['isdir'] = 'D' in attr
-                data['datetime'] = time.strptime(info[37:51], '%d-%m-%y %H:%M')
+                info = re_spaces.split(accum[1].strip())
+                data['size'] = int(info[0])
+                attr = info[5]
+                data['isdir'] = 'd' in attr.lower()
+                data['datetime'] = time.strptime(info[3]+" "+info[4], '%d-%m-%y %H:%M')
                 data['comment'] = None
                 yield data
                 accum = []
