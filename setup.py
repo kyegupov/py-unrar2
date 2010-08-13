@@ -17,7 +17,7 @@ class smart_install_data(install_data):
 
 data_files = []
 for dirpath, dirnames, filenames in os.walk(r'.'):
-    for dirname in ['.svn','build', 'dist', '_sgbak']:
+    for dirname in ['.svn','build', 'dist', '_sgbak', '.hg']:
         try:
             dirnames.remove(dirname)
         except ValueError:
