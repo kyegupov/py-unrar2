@@ -186,8 +186,11 @@ class RarFileImplementation(object):
 
     def init(self, password=None):
 
+        self.password = password
         archiveData = RAROpenArchiveDataEx(ArcNameW=self.archiveName, OpenMode=RAR_OM_EXTRACT)
         self._handle = RAROpenArchiveEx(ctypes.byref(archiveData))
+        self.c_callback = UNRARCALLBACK(self.password_provider_callback)
+        RARSetCallback(self._handle, self.c_callback, 1)
 
         if archiveData.OpenResult != 0:
             raise RARExceptions[archiveData.OpenResult]
@@ -199,6 +202,11 @@ class RarFileImplementation(object):
 
         if password:
             RARSetPassword(self._handle, password)
+            
+    def password_provider_callback(self, msg, UserData, P1, P2):
+        if msg == UCM_NEEDPASSWORD and self.password!=None:
+            (ctypes.c_char*P2).from_address(P1).value = self.password
+        return 1
 
     def destruct(self):
         if self._handle and RARCloseArchive:
@@ -207,7 +215,10 @@ class RarFileImplementation(object):
     def infoiter(self):
         index = 0
         headerData = RARHeaderDataEx()
-        while not RARReadHeaderEx(self._handle, ctypes.byref(headerData)):
+        res = RARReadHeaderEx(self._handle, ctypes.byref(headerData))
+        if res==ERAR_BAD_DATA:
+            raise IncorrectRARPassword
+        while not res:
             self.needskip = True
             
             data = {}
@@ -225,6 +236,7 @@ class RarFileImplementation(object):
             index += 1
             if self.needskip:
                 RARProcessFile(self._handle, RAR_SKIP, None, None)
+            res = RARReadHeaderEx(self._handle, ctypes.byref(headerData))
 
     def read_files(self, checker):
         res = []
