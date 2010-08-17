@@ -81,12 +81,12 @@ list(UnRAR2.RarFile('test_nulls.rar').infoiter())
 
 # extract files from a protected archive
 cleanup()
-UnRAR2.RarFile('test_protected.rar', password="secret").extract()
+UnRAR2.RarFile('test_protected_headers.rar', password="secret").extract()
 assert os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
 cleanup()
 errored = False
 try:
-    UnRAR2.RarFile('test_protected.rar', password="seqret").extract()
+    UnRAR2.RarFile('test_protected_headers.rar', password="seqret").extract()
 except IncorrectRARPassword:
     errored = True
 assert not os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
