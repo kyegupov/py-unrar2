@@ -20,7 +20,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-# Low level interface - see UnRARDLL\UNRARDLL.TXT
+# Unix version uses unrar command line executable
 
 import subprocess
 import gc
