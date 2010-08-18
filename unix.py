@@ -60,13 +60,16 @@ class RarFileImplementation(object):
 
     def init(self, password=None):
         self.password = password
+        
+        
 
         stdoutdata, stderrdata = self.call('v', []).communicate()
         
         for line in stderrdata.splitlines():
             if line.strip().startswith("Cannot open"):
                 raise FileOpenError
-            
+            if line.find("CRC failed")>=0:
+                raise IncorrectRARPassword   
         accum = []
         source = iter(stdoutdata.splitlines())
         line = ''
@@ -83,12 +86,17 @@ class RarFileImplementation(object):
         else:
             self.comment = None
                 
-
+    def escaped_password(self):
+        return '-' if self.password == None else self.password
+        
+        
     def call(self, cmd, options=[], files=[]):
-        soptions = ['-'+x for x in options]
+        options2 = options + ['p'+self.escaped_password()]
+        soptions = ['-'+x for x in options2]
         return call_unrar([cmd]+soptions+['--',self.archiveName]+files)
 
     def infoiter(self):
+        
         stdoutdata, stderrdata = self.call('v', ['c-']).communicate()
         
         for line in stderrdata.splitlines():
@@ -101,6 +109,8 @@ class RarFileImplementation(object):
         while not line.startswith('--------------'):
             if line.strip().endswith('is not RAR archive'):
                 raise InvalidRARArchive
+            if line.find("CRC failed")>=0:
+                raise IncorrectRARPassword  
             line = source.next()
         line = source.next()
         i = 0
@@ -154,7 +164,9 @@ class RarFileImplementation(object):
                 res.append(info)
         names.append(path)
         proc = self.call(command, options, names)
-        proc.communicate()
+        stdoutdata, stderrdata = proc.communicate()
+        if stderrdata.find("CRC failed")>=0:
+            raise IncorrectRARPassword  
         return res            
             
     def destruct(self):

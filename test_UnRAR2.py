@@ -79,7 +79,21 @@ cleanup()
 # list big file in an archive
 list(UnRAR2.RarFile('test_nulls.rar').infoiter())
 
-# extract files from a protected archive
+# extract files from an archive with protected files
+cleanup()
+UnRAR2.RarFile('test_protected_files.rar', password="protected").extract()
+assert os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
+cleanup()
+errored = False
+try:
+    UnRAR2.RarFile('test_protected_files.rar', password="proteqted").extract()
+except IncorrectRARPassword:
+    errored = True
+assert not os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
+assert errored
+cleanup()
+
+# extract files from an archive with protected headers
 cleanup()
 UnRAR2.RarFile('test_protected_headers.rar', password="secret").extract()
 assert os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
