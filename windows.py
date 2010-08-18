@@ -245,7 +245,9 @@ class RarFileImplementation(object):
                 reader = PassiveReader()
                 c_callback = UNRARCALLBACK(reader._callback)
                 RARSetCallback(self._handle, c_callback, 1)
-                RARProcessFile(self._handle, RAR_TEST, None, None)
+                tmpres = RARProcessFile(self._handle, RAR_TEST, None, None)
+                if tmpres==ERAR_BAD_DATA:
+                    raise IncorrectRARPassword
                 self.needskip = False
                 res.append((info, reader.get_result()))
         return res
@@ -265,7 +267,10 @@ class RarFileImplementation(object):
                     raise DeprecationWarning, "Condition callbacks returning strings are deprecated and only supported in Windows"                    
                     target = checkres
                 if overwrite or (not os.path.exists(target)):
-					RARProcessFile(self._handle, RAR_EXTRACT, None, target)                
+                    tmpres = RARProcessFile(self._handle, RAR_EXTRACT, None, target)
+                    if tmpres==ERAR_BAD_DATA:
+                        raise IncorrectRARPassword
+
                 self.needskip = False
                 res.append(info)
         return res
