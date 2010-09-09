@@ -67,7 +67,7 @@ class RarInfo(object):
     """
 
     def __init__(self, rarfile, data):
-        self.rarfile = weakref.ref(rarfile)
+        self.rarfile = weakref.proxy(rarfile)
         self.index = data['index']
         self.filename = data['filename']
         self.isdir = data['isdir']
@@ -78,7 +78,11 @@ class RarInfo(object):
 
 
     def __str__(self):
-        return '<RarInfo "%s" in "%s">' % (self.filename, self.rarfile.archiveName)
+        try :
+            arcName = self.rarfile.archiveName
+        except ReferenceError:
+            arcName = "[ARCHIVE_NO_LONGER_LOADED]"
+        return '<RarInfo "%s" in "%s">' % (self.filename, arcName)
 
 class RarFile(RarFileImplementation):
 

@@ -25,7 +25,7 @@
 from __future__ import generators
 
 import ctypes, ctypes.wintypes
-import os, os.path
+import os, os.path, sys
 import Queue
 import time
 
@@ -182,14 +182,61 @@ class PassiveReader:
     def get_result(self):
         return ''.join(self.buf)
 
+class RarInfoIterator(object):
+    def __init__(self, arc):
+        self.arc = arc
+        self.index = 0
+        self.headerData = RARHeaderDataEx()
+        self.res = RARReadHeaderEx(self.arc._handle, ctypes.byref(self.headerData))
+        if self.res==ERAR_BAD_DATA:
+            raise IncorrectRARPassword
+        self.arc.lockStatus = "locked"
+        self.arc.needskip = False
+        
+    def __iter__(self):
+        return self
+        
+    def next(self):
+        if self.index>0:
+            if self.arc.needskip:
+                RARProcessFile(self.arc._handle, RAR_SKIP, None, None)
+            self.res = RARReadHeaderEx(self.arc._handle, ctypes.byref(self.headerData))
+
+        if self.res:
+            raise StopIteration 
+        self.arc.needskip = True
+        
+        data = {}
+        data['index'] = self.index
+        data['filename'] = self.headerData.FileName
+        data['datetime'] = DosDateTimeToTimeTuple(self.headerData.FileTime)
+        data['isdir'] = ((self.headerData.Flags & 0xE0) == 0xE0)
+        data['size'] = self.headerData.UnpSize + (self.headerData.UnpSizeHigh << 32)
+        if self.headerData.CmtState == 1:
+            data['comment'] = self.headerData.CmtBuf.value
+        else:
+            data['comment'] = None
+        self.index += 1
+        return data
+
+            
+    def __del__(self):
+        self.arc.lockStatus = "finished"
+
+def generate_password_provider(password):
+    def password_provider_callback(msg, UserData, P1, P2):
+        if msg == UCM_NEEDPASSWORD and password!=None:
+            (ctypes.c_char*P2).from_address(P1).value = password
+        return 1
+    return password_provider_callback
+
 class RarFileImplementation(object):
 
     def init(self, password=None):
-
         self.password = password
         archiveData = RAROpenArchiveDataEx(ArcNameW=self.archiveName, OpenMode=RAR_OM_EXTRACT)
         self._handle = RAROpenArchiveEx(ctypes.byref(archiveData))
-        self.c_callback = UNRARCALLBACK(self.password_provider_callback)
+        self.c_callback = UNRARCALLBACK(generate_password_provider(self.password))
         RARSetCallback(self._handle, self.c_callback, 1)
 
         if archiveData.OpenResult != 0:
@@ -203,40 +250,24 @@ class RarFileImplementation(object):
         if password:
             RARSetPassword(self._handle, password)
             
-    def password_provider_callback(self, msg, UserData, P1, P2):
-        if msg == UCM_NEEDPASSWORD and self.password!=None:
-            (ctypes.c_char*P2).from_address(P1).value = self.password
-        return 1
+        self.lockStatus = "ready"
+            
+
 
     def destruct(self):
         if self._handle and RARCloseArchive:
             RARCloseArchive(self._handle)
 
-    def infoiter(self):
-        index = 0
-        headerData = RARHeaderDataEx()
-        res = RARReadHeaderEx(self._handle, ctypes.byref(headerData))
-        if res==ERAR_BAD_DATA:
-            raise IncorrectRARPassword
-        while not res:
-            self.needskip = True
-            
-            data = {}
-            data['index'] = index
-            data['filename'] = headerData.FileName
-            data['datetime'] = DosDateTimeToTimeTuple(headerData.FileTime)
-            data['isdir'] = ((headerData.Flags & 0xE0) == 0xE0)
-            data['size'] = headerData.UnpSize + (headerData.UnpSizeHigh << 32)
-            if headerData.CmtState == 1:
-                data['comment'] = headerData.CmtBuf.value
-            else:
-                data['comment'] = None
+    def make_sure_ready(self):
+        if self.lockStatus == "locked":
+            raise InvalidRARArchiveUsage("cannot execute infoiter() without finishing previous one")
+        if self.lockStatus == "finished":
+            self.destruct()
+            self.init(self.password)
 
-            yield data
-            index += 1
-            if self.needskip:
-                RARProcessFile(self._handle, RAR_SKIP, None, None)
-            res = RARReadHeaderEx(self._handle, ctypes.byref(headerData))
+    def infoiter(self):
+        self.make_sure_ready()
+        return RarInfoIterator(self)
 
     def read_files(self, checker):
         res = []

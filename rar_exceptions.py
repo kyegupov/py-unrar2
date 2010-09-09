@@ -27,3 +27,4 @@ class ArchiveHeaderBroken(Exception): pass
 class InvalidRARArchive(Exception): pass
 class FileOpenError(Exception): pass
 class IncorrectRARPassword(Exception): pass
+class InvalidRARArchiveUsage(Exception): pass

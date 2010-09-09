@@ -1,4 +1,4 @@
-import os
+import os, sys
 
 import UnRAR2
 from UnRAR2.rar_exceptions import *
@@ -12,13 +12,30 @@ def cleanup(dir='test'):
             os.removedirs(os.path.join(path, dir))
 
 
+
+
+
+# reuse RarArchive object, en
+cleanup()
+rarc = UnRAR2.RarFile('test.rar')
+rarc.infolist()
+for info in rarc.infoiter():
+    saveinfo = info
+    assert (str(info)=="""<RarInfo "test" in "test.rar">""")
+    break
+rarc.extract()
+assert os.path.exists('test'+os.sep+'test.txt')
+assert os.path.exists('test'+os.sep+'this.py')
+del rarc
+assert (str(saveinfo)=="""<RarInfo "test" in "[ARCHIVE_NO_LONGER_LOADED]">""")
+cleanup()
+
 # extract all the files in test.rar
 cleanup()
 UnRAR2.RarFile('test.rar').extract()
 assert os.path.exists('test'+os.sep+'test.txt')
 assert os.path.exists('test'+os.sep+'this.py')
 cleanup()
-
 
 # extract all the files in test.rar matching the wildcard *.txt
 cleanup()
