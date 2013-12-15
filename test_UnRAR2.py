@@ -28,6 +28,21 @@ del rarc
 assert (str(saveinfo)=="""<RarInfo "test" in "[ARCHIVE_NO_LONGER_LOADED]">""")
 cleanup()
 
+# shell-unsafe-name test
+cleanup()
+rarc = UnRAR2.RarFile('[test].rar')
+rarc.infolist()
+for info in rarc.infoiter():
+    saveinfo = info
+    assert (str(info)=="""<RarInfo "[test].txt" in "[test].rar">""")
+    break
+rarc.extract()
+assert os.path.exists('[test].txt')
+del rarc
+assert (str(saveinfo)=="""<RarInfo "[test].txt" in "[ARCHIVE_NO_LONGER_LOADED]">""")
+cleanup()
+
+
 # extract all the files in test.rar
 cleanup()
 UnRAR2.RarFile('test.rar').extract()
