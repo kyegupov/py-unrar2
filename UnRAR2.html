@@ -1,6 +1,7 @@
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html><head><title>Python: package UnRAR2</title>
+<meta charset="utf-8">
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
@@ -95,6 +96,9 @@ If&nbsp;"condition"&nbsp;is&nbsp;omitted,&nbsp;all&nbsp;files&nbsp;are&nbsp;extr
 "overwrite"&nbsp;flag&nbsp;denotes&nbsp;whether&nbsp;extracted&nbsp;files&nbsp;will&nbsp;overwrite&nbsp;old&nbsp;ones.&nbsp;Defaults&nbsp;to&nbsp;true.<br>
 &nbsp;<br>
 Returns&nbsp;list&nbsp;of&nbsp;RarInfos&nbsp;for&nbsp;extracted&nbsp;files.</tt></dd></dl>
+
+<dl><dt><a name="RarFile-get_volume"><strong>get_volume</strong></a>(self)</dt><dd><tt>Determine&nbsp;which&nbsp;volume&nbsp;is&nbsp;it&nbsp;in&nbsp;a&nbsp;multi-volume&nbsp;archive.&nbsp;Returns&nbsp;None&nbsp;if&nbsp;it's&nbsp;not&nbsp;a&nbsp;<br>
+multi-volume&nbsp;archive.</tt></dd></dl>
 
 <dl><dt><a name="RarFile-infoiter"><strong>infoiter</strong></a>(self)</dt><dd><tt>Iterate&nbsp;over&nbsp;all&nbsp;the&nbsp;files&nbsp;in&nbsp;the&nbsp;archive,&nbsp;generating&nbsp;RarInfos.<br>
 &nbsp;<br>

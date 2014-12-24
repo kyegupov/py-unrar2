@@ -15,6 +15,7 @@ def cleanup(dir='test'):
 # basic test
 cleanup()
 rarc = UnRAR2.RarFile('test.rar')
+assert rarc.get_volume() == None
 rarc.infolist()
 assert rarc.comment == "This is a test."
 for info in rarc.infoiter():
@@ -137,6 +138,15 @@ except IncorrectRARPassword:
 assert not os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
 assert errored
 cleanup()
+
+# check volume number
+cleanup()
+rarc = UnRAR2.RarFile('test_volumes.part1.rar')
+assert rarc.get_volume() == 1
+rarc2 = UnRAR2.RarFile('test_volumes.part2.rar')
+assert rarc2.get_volume() == 2
+cleanup()
+
 
 # make sure docstring examples are working
 import doctest
