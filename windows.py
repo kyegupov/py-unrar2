@@ -43,6 +43,7 @@ ERAR_EREAD = 18
 ERAR_EWRITE = 19
 ERAR_SMALL_BUF = 20
 ERAR_UNKNOWN = 21
+ERAR_MISSING_PASSWORD = 22
 
 RAR_OM_LIST = 0
 RAR_OM_EXTRACT = 1
@@ -191,7 +192,7 @@ class RarInfoIterator(object):
         self.index = 0
         self.headerData = RARHeaderDataEx()
         self.res = RARReadHeaderEx(self.arc._handle, ctypes.byref(self.headerData))
-        if self.res==ERAR_BAD_DATA:
+        if self.res in [ERAR_BAD_DATA, ERAR_MISSING_PASSWORD]:
             raise IncorrectRARPassword
         self.arc.lockStatus = "locked"
         self.arc.needskip = False
@@ -281,7 +282,7 @@ class RarFileImplementation(object):
                 c_callback = UNRARCALLBACK(reader._callback)
                 RARSetCallback(self._handle, c_callback, 1)
                 tmpres = RARProcessFile(self._handle, RAR_TEST, None, None)
-                if tmpres==ERAR_BAD_DATA:
+                if tmpres in [ERAR_BAD_DATA, ERAR_MISSING_PASSWORD]:
                     raise IncorrectRARPassword
                 self.needskip = False
                 res.append((info, reader.get_result()))
@@ -303,7 +304,7 @@ class RarFileImplementation(object):
                     target = checkres
                 if overwrite or (not os.path.exists(target)):
                     tmpres = RARProcessFile(self._handle, RAR_EXTRACT, None, target)
-                    if tmpres==ERAR_BAD_DATA:
+                    if tmpres in [ERAR_BAD_DATA, ERAR_MISSING_PASSWORD]:
                         raise IncorrectRARPassword
 
                 self.needskip = False
