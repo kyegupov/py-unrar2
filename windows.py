@@ -306,4 +306,7 @@ class RarFileImplementation(object):
                 res.append(info)
         return res
 
+    def get_volume(self):
+        raise NotImplementedError()
+
 
