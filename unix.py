@@ -240,7 +240,7 @@ class RarFileImplementation(object):
             line = source.next()
             items = line.strip().split()
             if len(items)>4 and items[4]=="volume":
-                return int(items[5])
+                return int(items[5]) - 1
             else:
                 return None
                 
@@ -250,7 +250,7 @@ class RarFileImplementation(object):
             line = source.next()
             items = line.strip().split()
             if items[1]=="volume":
-                return int(items[2])
+                return int(items[2]) - 1
             else:
                 return None
 

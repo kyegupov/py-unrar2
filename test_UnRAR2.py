@@ -141,12 +141,16 @@ cleanup()
 
 # check volume number
 cleanup()
-rarc = UnRAR2.RarFile('test_volumes.part1.rar')
-assert rarc.get_volume() == 1
+rarc1 = UnRAR2.RarFile('test_volumes.part1.rar')
+assert rarc1.get_volume() == 0
 rarc2 = UnRAR2.RarFile('test_volumes.part2.rar')
-assert rarc2.get_volume() == 2
+assert rarc2.get_volume() == 1
 cleanup()
-
+rarc1 = UnRAR2.RarFile('test_volumes_old.rar')
+assert rarc1.get_volume() == 0
+rarc2 = UnRAR2.RarFile('test_volumes_old.r00')
+assert rarc2.get_volume() == 1
+cleanup()
 
 # make sure docstring examples are working
 import doctest

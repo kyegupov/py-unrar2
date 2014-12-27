@@ -159,7 +159,7 @@ class RarFile(RarFileImplementation):
 
     def get_volume(self):
         """Determine which volume is it in a multi-volume archive. Returns None if it's not a 
-        multi-volume archive."""
+        multi-volume archive, 0-based volume number otherwise."""
         return RarFileImplementation.get_volume(self)
 
 def condition2checker(condition):
