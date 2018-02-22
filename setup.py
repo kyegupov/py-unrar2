@@ -17,7 +17,7 @@ class smart_install_data(install_data):
 
 data_files = []
 for dirpath, dirnames, filenames in os.walk(r'.'):
-    for dirname in ['.svn','build', 'dist', '_sgbak', '.hg']:
+    for dirname in ['.svn', 'build', 'dist', '_sgbak', '.hg']:
         try:
             dirnames.remove(dirname)
         except ValueError:
@@ -48,7 +48,6 @@ setup(name='pyUnRAR2',
                    'Topic :: System :: Archiving :: Compression',
                   ],
       packages=['unrar2'],
-      package_dir={'unrar2' : ''},
-      data_files=data_files,
-      cmdclass = {'install_data': smart_install_data}, requires=['six']
+      package_dir={'unrar2': 'unrar2'},
+      cmdclass={'install_data': smart_install_data}, requires=['six']
       )
