@@ -161,8 +161,12 @@ class RarFileImplementation(object):
                     data['size'] = int(fields[0])
                     attr = fields[5]
                     data['isdir'] = 'd' in attr.lower()
-                    data['datetime'] = time.strptime(
-                        fields[3] + " " + fields[4], '%d-%m-%y %H:%M')
+                    raw_date = fields[3] + " " + fields[4]
+                    try:
+                        data['datetime'] = time.strptime(raw_date, '%d-%m-%y %H:%M')
+                    except ValueError:
+                        data['datetime'] = time.strptime(raw_date, '%Y-%m-%d %H:%M')
+
                     data['comment'] = None
                     data['volume'] = None
                     yield data
@@ -178,8 +182,11 @@ class RarFileImplementation(object):
                 }
                 attr = fields[0]
                 data['isdir'] = 'd' in attr.lower()
-                data['datetime'] = time.strptime("{date} {time}".format(date=fields[2], time=fields[3]),
-                                                 '%d-%m-%y %H:%M')
+                raw_date = fields[2] + " " + fields[3]
+                try:
+                    data['datetime'] = time.strptime(raw_date, '%d-%m-%y %H:%M')
+                except ValueError:
+                    data['datetime'] = time.strptime(raw_date, '%Y-%m-%d %H:%M')
                 data['comment'] = None
                 data['volume'] = None
                 yield data
