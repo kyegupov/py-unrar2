@@ -39,17 +39,18 @@ import fnmatch
 import logging
 import time
 import weakref
+import platform
 
 from six import integer_types, string_types
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
 
-try:
+if platform.system() == "Windows":
     from .windows import RarFileImplementation
 
     log.debug('Using Windows implementation')
-except ImportError:
+else:
     from .unix import RarFileImplementation
 
     log.debug('Using Unix implementation')
@@ -99,7 +100,7 @@ class RarFile(RarFileImplementation):
         Properties:
             comment - comment associated with the archive
 
-        >>> print RarFile('test.rar').comment
+        >>> print RarFile('tests/test.rar').comment
         This is a test.
         """
         self.archiveName = archiveName
@@ -112,7 +113,7 @@ class RarFile(RarFileImplementation):
         """Iterate over all the files in the archive, generating RarInfos.
 
         >>> import os
-        >>> for fileInArchive in RarFile('test.rar').infoiter():
+        >>> for fileInArchive in RarFile('tests/test.rar').infoiter():
         ...     print os.path.split(fileInArchive.filename)[-1],
         ...     print fileInArchive.isdir,
         ...     print fileInArchive.size,

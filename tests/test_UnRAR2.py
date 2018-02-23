@@ -1,7 +1,7 @@
 import os, sys
 
-import unrar2
-from unrar2.rar_exceptions import *
+import UnRAR2
+from UnRAR2.rar_exceptions import *
 
 
 def cleanup(dir='test'):
@@ -14,13 +14,13 @@ def cleanup(dir='test'):
 
 # basic test
 cleanup()
-rarc = unrar2.RarFile('test.rar')
+rarc = UnRAR2.RarFile('tests/test.rar')
 assert rarc.get_volume() == None
 rarc.infolist()
 assert rarc.comment == "This is a test."
 for info in rarc.infoiter():
     saveinfo = info
-    assert (str(info)=="""<RarInfo "test" in "test.rar">""")
+    assert (str(info)=="""<RarInfo "test" in "tests/test.rar">""")
     break
 rarc.extract()
 assert os.path.exists('test'+os.sep+'test.txt')
@@ -31,11 +31,11 @@ cleanup()
 
 # shell-unsafe-name test
 cleanup()
-rarc = unrar2.RarFile('[test].rar')
+rarc = UnRAR2.RarFile('tests/[test].rar')
 rarc.infolist()
 for info in rarc.infoiter():
     saveinfo = info
-    assert (str(info)=="""<RarInfo "[test].txt" in "[test].rar">""")
+    assert (str(info)=="""<RarInfo "[test].txt" in "tests/[test].rar">""")
     break
 rarc.extract()
 assert os.path.exists('[test].txt')
@@ -46,14 +46,14 @@ cleanup()
 
 # extract all the files in test.rar
 cleanup()
-unrar2.RarFile('test.rar').extract()
+UnRAR2.RarFile('tests/test.rar').extract()
 assert os.path.exists('test'+os.sep+'test.txt')
 assert os.path.exists('test'+os.sep+'this.py')
 cleanup()
 
 # extract all the files in test.rar matching the wildcard *.txt
 cleanup()
-unrar2.RarFile('test.rar').extract('*.txt')
+UnRAR2.RarFile('tests/test.rar').extract('*.txt')
 assert os.path.exists('test'+os.sep+'test.txt')
 assert not os.path.exists('test'+os.sep+'this.py')
 cleanup()
@@ -61,7 +61,7 @@ cleanup()
 
 # check the name and size of each file, extracting small ones
 cleanup()
-archive = unrar2.RarFile('test.rar')
+archive = UnRAR2.RarFile('tests/test.rar')
 assert archive.comment == 'This is a test.'
 archive.extract(lambda rarinfo: rarinfo.size <= 1024)
 for rarinfo in archive.infoiter():
@@ -74,7 +74,7 @@ cleanup()
 
 # extract this.py, overriding it's destination
 cleanup('test2')
-archive = unrar2.RarFile('test.rar')
+archive = UnRAR2.RarFile('tests/test.rar')
 archive.extract('*.py', 'test2', False)
 assert os.path.exists('test2'+os.sep+'this.py')
 cleanup('test2')
@@ -82,8 +82,8 @@ cleanup('test2')
 
 # extract test.txt to memory
 cleanup()
-archive = unrar2.RarFile('test.rar')
-entries = unrar2.RarFile('test.rar').read_files('*test.txt')
+archive = UnRAR2.RarFile('tests/test.rar')
+entries = UnRAR2.RarFile('tests/test.rar').read_files('*test.txt')
 assert len(entries)==1
 assert entries[0][0].filename.endswith('test.txt')
 assert entries[0][1]=='This is only a test.'
@@ -94,7 +94,7 @@ cleanup()
 fo = open('test'+os.sep+'test.txt',"wt")
 fo.write("blah")
 fo.close()
-unrar2.RarFile('test.rar').extract('*.txt')
+UnRAR2.RarFile('tests/test.rar').extract('*.txt')
 assert open('test'+os.sep+'test.txt',"rt").read()!="blah"
 cleanup()
 
@@ -103,22 +103,22 @@ cleanup()
 fo = open('test'+os.sep+'test.txt',"wt")
 fo.write("blahblah")
 fo.close()
-unrar2.RarFile('test.rar').extract('*.txt', overwrite = False)
+UnRAR2.RarFile('tests/test.rar').extract('*.txt', overwrite = False)
 assert open('test'+os.sep+'test.txt',"rt").read()=="blahblah"
 cleanup()
 
 # list big file in an archive
-list(unrar2.RarFile('test_nulls.rar').infoiter())
+list(UnRAR2.RarFile('tests/test_nulls.rar').infoiter())
 
 # extract files from an archive with protected files
 cleanup()
-rarc = unrar2.RarFile('test_protected_files.rar', password="protected")
+rarc = UnRAR2.RarFile('tests/test_protected_files.rar', password="protected")
 rarc.extract()
 assert os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
 cleanup()
 errored = False
 try:
-    unrar2.RarFile('test_protected_files.rar', password="proteqted").extract()
+    UnRAR2.RarFile('tests/test_protected_files.rar', password="proteqted").extract()
 except IncorrectRARPassword:
     errored = True
 assert not os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
@@ -126,7 +126,7 @@ assert errored
 cleanup()
 errored = False
 try:
-    unrar2.RarFile('test_protected_files.rar').extract()
+    UnRAR2.RarFile('tests/test_protected_files.rar').extract()
 except IncorrectRARPassword:
     errored = True
 assert not os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
@@ -136,12 +136,12 @@ cleanup()
 
 # extract files from an archive with protected headers
 cleanup()
-unrar2.RarFile('test_protected_headers.rar', password="secret").extract()
+UnRAR2.RarFile('tests/test_protected_headers.rar', password="secret").extract()
 assert os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
 cleanup()
 errored = False
 try:
-    unrar2.RarFile('test_protected_headers.rar', password="seqret").extract()
+    UnRAR2.RarFile('tests/test_protected_headers.rar', password="seqret").extract()
 except IncorrectRARPassword:
     errored = True
 assert not os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
@@ -149,7 +149,7 @@ assert errored
 cleanup()
 errored = False
 try:
-    unrar2.RarFile('test_protected_headers.rar').extract()
+    UnRAR2.RarFile('tests/test_protected_headers.rar').extract()
 except IncorrectRARPassword:
     errored = True
 assert not os.path.exists('test'+os.sep+'top_secret_xxx_file.txt')
@@ -158,24 +158,24 @@ cleanup()
 
 # check volume number
 cleanup()
-rarc1 = unrar2.RarFile('test_volumes.part1.rar')
+rarc1 = UnRAR2.RarFile('tests/test_volumes.part1.rar')
 assert rarc1.get_volume() == 0
-rarc2 = unrar2.RarFile('test_volumes.part2.rar')
+rarc2 = UnRAR2.RarFile('tests/test_volumes.part2.rar')
 assert rarc2.get_volume() == 1
 cleanup()
-rarc1 = unrar2.RarFile('test_volumes_old.rar')
+rarc1 = UnRAR2.RarFile('tests/test_volumes_old.rar')
 assert rarc1.get_volume() == 0
-rarc2 = unrar2.RarFile('test_volumes_old.r00')
+rarc2 = UnRAR2.RarFile('tests/test_volumes_old.r00')
 assert rarc2.get_volume() == 1
 cleanup()
 
 # make sure docstring examples are working
 import doctest
-doctest.testmod(unrar2)
+doctest.testmod(UnRAR2)
 
 # update documentation
 import pydoc
-pydoc.writedoc(unrar2)
+pydoc.writedoc(UnRAR2)
 
 # cleanup
 try:

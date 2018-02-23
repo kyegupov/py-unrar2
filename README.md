@@ -9,3 +9,6 @@ It enables reading and unpacking of archives created with the RAR/WinRAR archive
 Downloads:
 https://drive.google.com/folderview?id=0B6L2WW4Bg4jvMnFtbjRKOUtDQTQ&usp=sharing#list
 
+Running tests:
+
+python -m unittest tests.test_UnRAR2

@@ -4,7 +4,7 @@ import os
 from distutils.command.install_data import install_data
 from distutils.core import setup
 
-import unrar2
+import UnRAR2
 
 
 class smart_install_data(install_data):
@@ -24,17 +24,17 @@ for dirpath, dirnames, filenames in os.walk(r'.'):
             pass
     for filename in [fn for fn in filenames if os.path.splitext(fn)[-1].lower() in ('.pyc', '.pyo', '.scc')]:
         filenames.remove(filename)
-    parts = ['unrar2']+dirpath.split(os.sep)[1:]
+    parts = ['UnRAR2']+dirpath.split(os.sep)[1:]
     
     data_files.append((os.path.join(*parts), [os.path.join(dirpath, fn) for fn in filenames]))
 
 setup(name='pyUnRAR2',
-      version=unrar2.__version__,
+      version=UnRAR2.__version__,
       description='Improved Python wrapper around the free UnRAR.dll',
-      long_description=unrar2.__doc__.strip(),
+      long_description=UnRAR2.__doc__.strip(),
       author='Konstantin Yegupov',
-      author_email='yk4ever@gmail.com',
-      url='http://code.google.com/py-unrar2',
+      author_email='kyegupov4@gmail.com',
+      url='https://github.com/kyegupov/py-unrar2',
       license='MIT',
       platforms='Windows',
       classifiers=[
@@ -47,7 +47,7 @@ setup(name='pyUnRAR2',
                    'Topic :: Software Development :: Libraries :: Python Modules',
                    'Topic :: System :: Archiving :: Compression',
                   ],
-      packages=['unrar2'],
-      package_dir={'unrar2': 'unrar2'},
+      packages=['UnRAR2'],
+      package_dir={'UnRAR2': 'UnRAR2'},
       cmdclass={'install_data': smart_install_data}, requires=['six']
       )
