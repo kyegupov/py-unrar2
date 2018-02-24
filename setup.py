@@ -49,5 +49,5 @@ setup(name='pyUnRAR2',
                   ],
       packages=['UnRAR2'],
       package_dir={'UnRAR2': 'UnRAR2'},
-      cmdclass={'install_data': smart_install_data}, requires=['six']
+      cmdclass={'install_data': smart_install_data}
       )

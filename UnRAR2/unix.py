@@ -28,8 +28,10 @@ import os.path
 import re
 import subprocess
 import time
+import sys
 
-from six import string_types
+string_types = (str,) if sys.version_info[0] >= 3 else (str, unicode)
+integer_types = (int,) if sys.version_info[0] >= 3 else (int, long)
 
 from .rar_exceptions import *
 

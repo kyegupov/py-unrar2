@@ -33,15 +33,18 @@ similar to the C interface provided by UnRAR. There is also a
 higher level interface which makes some common operations easier.
 """
 
-__version__ = '0.99.6'
+from __future__ import print_function
+
+__version__ = '0.99.7'
 
 import fnmatch
 import logging
 import time
 import weakref
 import platform
+import sys
 
-from six import integer_types, string_types
+string_types = (str,) if sys.version_info[0] >= 3 else (str, unicode)
 
 log = logging.getLogger(__name__)
 log.addHandler(logging.NullHandler())
@@ -100,7 +103,7 @@ class RarFile(RarFileImplementation):
         Properties:
             comment - comment associated with the archive
 
-        >>> print RarFile('tests/test.rar').comment
+        >>> print(RarFile('tests/test.rar').comment)
         This is a test.
         """
         self.archiveName = archiveName
@@ -114,12 +117,12 @@ class RarFile(RarFileImplementation):
 
         >>> import os
         >>> for fileInArchive in RarFile('tests/test.rar').infoiter():
-        ...     print os.path.split(fileInArchive.filename)[-1],
-        ...     print fileInArchive.isdir,
-        ...     print fileInArchive.size,
-        ...     print fileInArchive.comment,
-        ...     print tuple(fileInArchive.datetime)[0:5],
-        ...     print time.strftime('%a, %d %b %Y %H:%M', fileInArchive.datetime)
+        ...     print(os.path.split(fileInArchive.filename)[-1], end=' ')
+        ...     print(fileInArchive.isdir, end=' ')
+        ...     print(fileInArchive.size, end=' ')
+        ...     print(fileInArchive.comment, end=' ')
+        ...     print(tuple(fileInArchive.datetime)[0:5], end=' ')
+        ...     print(time.strftime('%a, %d %b %Y %H:%M', fileInArchive.datetime))
         test True 0 None (2003, 6, 30, 1, 59) Mon, 30 Jun 2003 01:59
         test.txt False 20 None (2003, 6, 30, 2, 1) Mon, 30 Jun 2003 02:01
         this.py False 1030 None (2002, 2, 8, 16, 47) Fri, 08 Feb 2002 16:47

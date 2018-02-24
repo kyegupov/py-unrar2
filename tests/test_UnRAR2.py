@@ -43,7 +43,6 @@ del rarc
 assert (str(saveinfo)=="""<RarInfo "[test].txt" in "[ARCHIVE_NO_LONGER_LOADED]">""")
 cleanup()
 
-
 # extract all the files in test.rar
 cleanup()
 UnRAR2.RarFile('tests/test.rar').extract()
@@ -58,7 +57,6 @@ assert os.path.exists('test'+os.sep+'test.txt')
 assert not os.path.exists('test'+os.sep+'this.py')
 cleanup()
 
-
 # check the name and size of each file, extracting small ones
 cleanup()
 archive = UnRAR2.RarFile('tests/test.rar')
@@ -67,10 +65,9 @@ archive.extract(lambda rarinfo: rarinfo.size <= 1024)
 for rarinfo in archive.infoiter():
     if rarinfo.size <= 1024 and not rarinfo.isdir:
         assert rarinfo.size == os.stat(rarinfo.filename).st_size
-assert file('test'+os.sep+'test.txt', 'rt').read() == 'This is only a test.'
+assert open('test'+os.sep+'test.txt', 'rt').read() == 'This is only a test.'
 assert not os.path.exists('test'+os.sep+'this.py')
 cleanup()
-
 
 # extract this.py, overriding it's destination
 cleanup('test2')
@@ -79,15 +76,13 @@ archive.extract('*.py', 'test2', False)
 assert os.path.exists('test2'+os.sep+'this.py')
 cleanup('test2')
 
-
 # extract test.txt to memory
 cleanup()
 archive = UnRAR2.RarFile('tests/test.rar')
 entries = UnRAR2.RarFile('tests/test.rar').read_files('*test.txt')
 assert len(entries)==1
 assert entries[0][0].filename.endswith('test.txt')
-assert entries[0][1]=='This is only a test.'
-
+assert entries[0][1]==b'This is only a test.'
 
 # extract all the files in test.rar with overwriting
 cleanup()

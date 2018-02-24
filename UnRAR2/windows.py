@@ -30,8 +30,24 @@ import os
 import os.path
 import re
 import time
+import sys
 
 from .rar_exceptions import *
+
+if sys.version_info > (3,3):
+    import faulthandler
+    faulthandler.enable()
+
+if sys.version_info[0] >= 3:
+    def string_from_bytes(s):
+        return s.decode(sys.getdefaultencoding())
+    def bytes_from_string(s):
+        return s.encode(sys.getdefaultencoding())
+else:
+    def string_from_bytes(s):
+        return s
+    def bytes_from_string(s):
+        return s
 
 ERAR_END_ARCHIVE = 10
 ERAR_NO_MEMORY = 11
@@ -78,7 +94,6 @@ try:
         os.path.join(os.path.split(__file__)[0], 'UnRARDLL', dll_name))
 except WindowsError:
     unrar = ctypes.WinDLL(dll_name)
-
 
 class RAROpenArchiveDataEx(ctypes.Structure):
     def __init__(self, ArcName=None, ArcNameW=u'', OpenMode=RAR_OM_LIST):
@@ -167,8 +182,8 @@ _RARSetPassword = _wrap(ctypes.c_int, unrar.RARSetPassword,
                         [ctypes.wintypes.HANDLE, ctypes.c_char_p])
 
 
-def RARSetPassword(*args, **kwargs):
-    _RARSetPassword(*args, **kwargs)
+def RARSetPassword(handle, password):
+    _RARSetPassword(handle, password)
 
 
 RARProcessFile = _wrap(ctypes.c_int, unrar.RARProcessFile,
@@ -178,8 +193,10 @@ RARProcessFile = _wrap(ctypes.c_int, unrar.RARProcessFile,
 RARCloseArchive = _wrap(ctypes.c_int, unrar.RARCloseArchive,
                         [ctypes.wintypes.HANDLE])
 
-UNRARCALLBACK = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_uint, ctypes.c_long,
-                                   ctypes.c_long, ctypes.c_long)
+# The author of the UnRAR library uses "long" as the types of all the parameters,
+# even if some of them are pointers *facepalm*
+UNRARCALLBACK = ctypes.WINFUNCTYPE(ctypes.c_int, ctypes.c_voidp, ctypes.c_voidp,
+                                   ctypes.c_voidp, ctypes.c_voidp)
 RARSetCallback = _wrap(ctypes.c_int, unrar.RARSetCallback,
                        [ctypes.wintypes.HANDLE, UNRARCALLBACK, ctypes.c_long])
 
@@ -189,7 +206,6 @@ RARExceptions = {
     ERAR_BAD_ARCHIVE: InvalidRARArchive,
     ERAR_EOPEN: FileOpenError,
 }
-
 
 class PassiveReader:
     """Used for reading files to memory"""
@@ -208,7 +224,7 @@ class PassiveReader:
         return 1
 
     def get_result(self):
-        return ''.join(self.buf)
+        return b''.join(self.buf)
 
 
 class RarInfoIterator(object):
@@ -226,7 +242,7 @@ class RarInfoIterator(object):
     def __iter__(self):
         return self
 
-    def next(self):
+    def __next__(self):
         if self.index > 0:
             if self.arc.needskip:
                 RARProcessFile(self.arc._handle, RAR_SKIP, None, None)
@@ -245,11 +261,13 @@ class RarInfoIterator(object):
                 self.headerData.UnpSizeHigh << 32)
         }
         if self.headerData.CmtState == 1:
-            data['comment'] = self.headerData.CmtBuf.value
+            data['comment'] = string_from_bytes(self.headerData.CmtBuf.value.decode)
         else:
             data['comment'] = None
         self.index += 1
         return data
+
+    next = __next__  # Python 2
 
     def __del__(self):
         self.arc.lockStatus = "finished"
@@ -278,12 +296,12 @@ class RarFileImplementation(object):
             raise RARExceptions[archive_data.OpenResult]
 
         if archive_data.CmtState == 1:
-            self.comment = archive_data.CmtBuf.value
+            self.comment = string_from_bytes(archive_data.CmtBuf.value)
         else:
             self.comment = None
 
         if password:
-            RARSetPassword(self._handle, password)
+            RARSetPassword(self._handle, bytes_from_string(password))
 
         self.lockStatus = "ready"
 
@@ -334,7 +352,7 @@ class RarFileImplementation(object):
                                              " and only supported in Windows")
                 if overwrite or (not os.path.exists(target)):
                     tmpres = RARProcessFile(self._handle, RAR_EXTRACT, None,
-                                            target)
+                                            target.encode(sys.getdefaultencoding()))
                     if tmpres in [ERAR_BAD_DATA, ERAR_MISSING_PASSWORD]:
                         raise IncorrectRARPassword
 
